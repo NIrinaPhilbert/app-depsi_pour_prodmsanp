@@ -1,0 +1,16 @@
+========== INSTALLATION ==========
+1- extraire l'archive et accéder au dossier du projet
+	Attention : Ne pas l'extraire dans un dossier xampp ou wamp mais quelque part dans le disque dur (symfony aura un serveur virtuel à démarrer)
+2- paramétrer le "DATABASE_URL" dans .env
+3- Importer la base de données "/docs/app_depsi.sql"
+4- exécuter ces commandes :
+	=> composer install
+	=> yarn install (ou npm install)
+	=> php bin/console cache:clear
+	=> php bin/console doctrine:schema:update --force
+5- lancer le projet :
+	=> symfony serve --no-tls
+	=> yarn run watch (ou npm run watch)
+6- lien du projet :
+	=> back-office : http://127.0.0.1:8000/admin/home ou http://localhost:8000/admin/home
+	=> front-office : http://127.0.0.1:8000 ou http://localhost:8000

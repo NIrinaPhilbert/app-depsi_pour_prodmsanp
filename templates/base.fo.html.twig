@@ -1,0 +1,53 @@
+{% set current_route = app.request.get('_route') %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <link rel="icon" type="image/png" href="/resources/img/logo.png">
+    <title>{% block title %}DEPSI{% endblock %}</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+    <!-- Vendor CSS Files -->
+    <link href="/resources/vendor-fo/animate.css/animate.min.css" rel="stylesheet">
+    <link href="/resources/vendor-fo/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/resources/vendor-fo/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="/resources/vendor-fo/glightbox/css/glightbox.min.css" rel="stylesheet">
+    <link href="/resources/vendor-fo/swiper/swiper-bundle.min.css" rel="stylesheet">
+    <link href="/resources/css/style.css" rel="stylesheet">
+    <!-- Template Main CSS File -->
+    {% block stylesheets %}{% endblock %}
+    <script src="/resources/jquery/jquery-3.5.1.js"></script>
+    <!-- Vendor JS Files -->
+    <script src="/resources/vendor/apexcharts/apexcharts.min.js"></script>
+    <script src="/resources/vendor-fo/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="/resources/vendor-fo/glightbox/js/glightbox.min.js"></script>
+    <script src="/resources/vendor-fo/isotope-layout/isotope.pkgd.min.js"></script>
+    <script src="/resources/vendor-fo/swiper/swiper-bundle.min.js"></script>
+    <script src="/resources/vendor-fo/waypoints/noframework.waypoints.js"></script>
+    <script src="/resources/vendor-fo/php-email-form/validate.js"></script>
+</head>
+<body class="fo">
+{% block body %}{% endblock %}
+{% block javascripts %}
+    {{ encore_entry_script_tags('app-fo') }}
+    <!-- Template Main JS File -->
+    <script src="/resources/js/main.js"></script>
+    <script type="text/javascript">
+        function showLoader() {
+            $('.modal-loading').css({'display': 'flex'})
+        }
+        function hideLoader() {
+            $('.modal-loading').hide()
+        }
+        function goToTop(top, left) {
+            window.scrollTo({
+                top: top,
+                left: left,
+                behavior: 'smooth'
+            })
+        }
+    </script>
+{% endblock %}
+</body>
+</html>

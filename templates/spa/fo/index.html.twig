@@ -1,0 +1,5 @@
+{% extends 'base.fo.html.twig' %}
+
+{% block body %}
+	<div id="app-fo" data-is-authenticated="{{ app.user ? 'true' : 'false' }}" data-user="{{ data|serialize(format = 'json') }}" class="app"></div>
+{% endblock %}
