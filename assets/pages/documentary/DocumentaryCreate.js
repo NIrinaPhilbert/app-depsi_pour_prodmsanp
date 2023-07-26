@@ -193,7 +193,7 @@ function DocumentaryCreate() {
                         theme: "colored",
                     })
                     setIsSaving(true)
-                    setCoverName('')
+                    /*setCoverName('')
                     setCoverFile({})
                     setDocNames([])
                     setDocFiles([])
@@ -204,7 +204,7 @@ function DocumentaryCreate() {
                     setDirection('')
                     setPubtype('')
                     setEntitys('')
-                    setThematic('')
+                    setThematic('')*/
                     navigate("/admin/documentaryresources")
                 })
                 .catch(function (error) {
