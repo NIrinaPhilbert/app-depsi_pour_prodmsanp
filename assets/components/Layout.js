@@ -212,6 +212,14 @@ const Layout = ({children}) =>{
 									<span>A propos du Ministère</span>
 								</Link>
 							</li>
+							<li className="nav-item">
+								<Link
+									to="/admin/organigrammedepsi"
+									className={currentRoute.includes('/organigrammedepsi') ? 'nav-link border-radius-0' : 'nav-link border-radius-0 collapsed'}>
+									<i className="bi bi-question-circle-fill fs-5"></i>
+									<span>Organigramme DEPSI</span>
+								</Link>
+							</li>
 						</ul>
 					</aside>
 					<main id="main" className="main">{ children }</main>

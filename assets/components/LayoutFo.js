@@ -150,8 +150,9 @@ const LayoutFo = ({children}) =>{
 							<li className="dropdown">
 								<Link to="#">A PROPOS</Link>
 								<ul className="">
-									<li><Link to="/aboutmoh" className={currentRoute.includes('/aboutmoh') ? 'active' : ''}>Ministère de la Santé</Link></li>
-									<li><Link to="/about" className={currentRoute.includes('/about') ? 'active' : ''}>DEPSI</Link></li>
+									<li><Link to="/aboutmoh" className={currentRoute.includes('/aboutmoh') ? 'active' : ''}>Organigramme Ministère</Link></li>
+									<li><Link to="/about" className={currentRoute.includes('/about') ? 'active' : ''}>Mots de la DEPSI</Link></li>
+									<li><Link to="/organigrammedepsi" className={currentRoute.includes('/organigrammedepsi') ? 'active' : ''}>Organigramme DEPSI</Link></li>
 								</ul>
 							</li>
 							{!isConnected && <li><a href="/login" className={'getstarted'}>Membre ?</a></li>}

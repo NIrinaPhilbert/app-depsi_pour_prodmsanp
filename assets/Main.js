@@ -53,6 +53,8 @@ import VisitorList from "./pages/visitor/VisitorList"
 import About from "./pages/about/About"
 // About
 import AboutMOH from "./pages/about/AboutMOH"
+// OrganigrammeDepsi
+import OrganigrammeDepsi from "./pages/about/OrganigrammeDepsi"
 
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
@@ -97,6 +99,7 @@ function Main() {
 	                <Route path="/admin/visitors" element={<VisitorList/>} />
 	                <Route path="/admin/about" element={<About/>} />
 					<Route path="/admin/aboutmoh" element={<AboutMOH/>} />
+					<Route path="/admin/organigrammedepsi" element={<OrganigrammeDepsi/>} />
 	            </Routes>
 	        </Router>
 	        <ToastContainer style={{ zIndex: 9999999 }} />
