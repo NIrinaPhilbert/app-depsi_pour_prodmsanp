@@ -23,8 +23,22 @@ class AboutmohFOController extends AbstractController
 		$aboutmoh = $doctrine->getManager()
             ->getRepository(AboutMOH::class)
             ->findDataByCount(1);
-        $aboutmoh = $aboutmoh[0];
+        
+        //============================//
+        if (empty($aboutmoh)) {
+            $oInfosNonDispo = new AboutMOH() ;
+            $oInfosNonDispo->setId(0) ;
+            $oInfosNonDispo->setTextContent('Information non encore enregistré') ;
+            return $this->json($oInfosNonDispo);
+        }
+        else{
+            $aboutmoh = $aboutmoh[0];
 
-        return $this->json($aboutmoh);
+            return $this->json($aboutmoh);
+            
+           
+        }
+
+        //===========================//
     }
 }

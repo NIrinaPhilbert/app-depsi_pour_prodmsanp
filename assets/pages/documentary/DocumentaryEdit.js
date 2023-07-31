@@ -34,6 +34,7 @@ const acceptCoverFormat = [
 function DocumentaryEdit() {
     const id = useParams().id
     const [title, setTitle] = useState('')
+    const [summary, setSummary] = useState('')
     const [date, setDate] = useState('')
     const [author, setAuthor] = useState('')
     const [posttype, setPosttype] = useState('')
@@ -69,6 +70,7 @@ function DocumentaryEdit() {
             let doc = response.data
             console.log(doc)
             setTitle(doc.title)
+            setSummary(doc.summary)
             setDate(new Date(doc.date))
             setAuthor(doc.author)
             setDirection(doc.direction)
@@ -165,6 +167,7 @@ function DocumentaryEdit() {
             formData.append("direction", direction)
             formData.append("entitys", entitys)
             formData.append("thematic", themes)
+            formData.append("summary", summary)
             axios.post(`/api/docs/edit/${id}`, formData)
                 .then(function (response) {
                     console.log('response='+response)
@@ -188,12 +191,13 @@ function DocumentaryEdit() {
                     setCoverFile({})
                     setDocumentAccess([document_access_keys[0]])
                     setTitle('')
+                    setSummary('')
                     setDate('')
                     setAuthor('')
-                    setDirection('')
+                    /*setDirection('')
                     setPubtype('')
                     setEntitys('')
-                    setThematic('')
+                    setThematic('')*/
                     navigate("/admin/documentaryresources")
                 })
                 .catch(function (error) {
@@ -377,11 +381,11 @@ function DocumentaryEdit() {
     return (
         <Layout>
             <div className="pagetitle">
-                <h1>Ressources documenatires</h1>
+                <h1>Ressources documentaires</h1>
                 <nav className="mt-2">
                     <ol className="breadcrumb">
                         <li className="breadcrumb-item"><Link to="/admin/home">DEPSI</Link></li>
-                        <li className="breadcrumb-item"><Link to="/admin/documentaryresources">Ressources documenatires</Link></li>
+                        <li className="breadcrumb-item"><Link to="/admin/documentaryresources">Ressources documentaires</Link></li>
                         <li className="breadcrumb-item active">Mise à jour</li>
                     </ol>
                 </nav>
@@ -537,6 +541,17 @@ function DocumentaryEdit() {
                                                         className="form-control border border-outline-primary bg-white"
                                                         onChange={changeEntitys} />
                                                     <label htmlFor="entitys">Entité source <span className="text-bold text-danger text-sm">*</span></label>
+                                                </div>
+                                                <div className="form-floating mx-4 mb-3">
+                                                    <textarea 
+                                                        onChange={(event)=>{setSummary(event.target.value)}}
+                                                        value={summary}
+                                                        className="form-control border border-outline-primary h-auto"
+                                                        id="summary"
+                                                        rows="8"
+                                                        name="summary"
+                                                        placeholder="Résumé"></textarea>
+                                                    <label htmlFor="summary">Résumé <span className="text-bold text-danger text-sm"></span></label>
                                                 </div>
                                                 
                                             </div>

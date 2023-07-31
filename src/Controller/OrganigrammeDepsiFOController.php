@@ -23,8 +23,22 @@ class OrganigrammeDepsiFOController extends AbstractController
 		$organigrammedepsi = $doctrine->getManager()
             ->getRepository(Organigrammedepsi::class)
             ->findDataByCount(1);
-        $organigrammedepsi = $organigrammedepsi[0];
+        if (empty($organigrammedepsi)) {
+            $oInfosNonDispo = new Organigrammedepsi() ;
+            $oInfosNonDispo->setId(0) ;
+            $oInfosNonDispo->setTextContent('Information non encore enregistré') ;
+            return $this->json($oInfosNonDispo);
+        }
+        else{
+            $organigrammedepsi = $organigrammedepsi[0];
+       
+          
+            return $this->json($organigrammedepsi);
+            
+           
+        }
+        
 
-        return $this->json($organigrammedepsi);
+        
     }
 }

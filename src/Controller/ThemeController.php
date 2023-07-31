@@ -49,7 +49,7 @@ class ThemeController extends AbstractController
     }
 
     /**
-     * @Route("/themes/posttypeOptions", name="themesOptions_index", methods={"GET"})
+     * @Route("/themes/posttypeOptions", name="thposttypeOptions_index", methods={"GET"})
      */
     public function posttypeOptions(ManagerRegistry $doctrine, Security $security, ParameterBagInterface $params): Response
     {

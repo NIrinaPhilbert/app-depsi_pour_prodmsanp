@@ -86,6 +86,7 @@ class DocumentaryResourcesController extends AbstractController
                 $entityManager = $doctrine->getManager();
                 $doc = new DocumentaryResources();
                 $doc->setTitle($request->request->get('title'));
+                $doc->setSummary($request->request->get('summary'));
                 $doc->setDate(new \DateTime($request->request->get('date')));
                 $doc->setAuthor($request->request->get('author'));
                 //$doc->setPubType($request->request->get('pub_type'));
@@ -229,6 +230,7 @@ class DocumentaryResourcesController extends AbstractController
                 'thematic' => $doc->getThemes()->getDesignation(),
                 'themesOptions' => $themesOptions,
                 'documentAccess' => $doc->getDocumentAccess(),
+                'summary' => $doc->getSummary(),
                 'documentAccessOptions' => $documentAccessOptions
             ];
         }
@@ -257,6 +259,7 @@ class DocumentaryResourcesController extends AbstractController
             if (!file_exists($docFolder)) mkdir($docFolder, 0777, true);
             if ($request->request->has('action') && $request->request->get('action') == 'modify') {
                 $doc->setTitle($request->request->get('title'));
+                $doc->setSummary($request->request->get('summary'));
                 $doc->setDate(new \DateTime($request->request->get('date')));
                 $doc->setAuthor($request->request->get('author'));
                 //$doc->setPubType($request->request->get('pub_type'));

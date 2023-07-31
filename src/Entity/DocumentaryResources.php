@@ -73,6 +73,11 @@ class DocumentaryResources
      */
     private $theme;
 
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $summary;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -207,6 +212,18 @@ class DocumentaryResources
     public function setThemes(?Themes $theme): self
     {
         $this->theme = $theme;
+
+        return $this;
+    }
+
+    public function getSummary(): ?string
+    {
+        return $this->summary;
+    }
+
+    public function setSummary(?string $summary): self
+    {
+        $this->summary = $summary;
 
         return $this;
     }

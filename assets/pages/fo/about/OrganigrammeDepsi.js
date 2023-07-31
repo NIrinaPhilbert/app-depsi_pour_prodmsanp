@@ -17,6 +17,9 @@ function OrganigrammeDepsi() {
         showLoader()
         axios.get(`/api/organigrammedepsi_fo/data`)
         .then(function (response) {
+            console.log(response)
+            //alert(response.data);
+            //return false;
             let aboutData = response.data
             setTextContent(aboutData.textContent)
             hideLoader()

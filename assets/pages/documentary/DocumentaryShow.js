@@ -14,6 +14,7 @@ document_access_keys = document_access_keys.split('|')
 function DocumentaryShow() {
     const id = useParams().id
     const [title, setTitle] = useState('')
+    const [summary, setSummary] = useState('')
     const [date, setDate] = useState('')
     const [author, setAuthor] = useState('')
     const [pubtype, setPubtype] = useState('')
@@ -39,6 +40,7 @@ function DocumentaryShow() {
         .then(function (response) {
             let doc = response.data
             setTitle(doc.title)
+            setSummary(doc.summary)
             setDate(new Date(doc.date))
             setAuthor(doc.author)
             setDirection(doc.direction)
@@ -105,11 +107,11 @@ function DocumentaryShow() {
     return (
         <Layout>
             <div className="pagetitle">
-                <h1>Ressources documenatires</h1>
+                <h1>Ressources documentaires</h1>
                 <nav className="mt-2">
                     <ol className="breadcrumb">
                         <li className="breadcrumb-item"><Link to="/admin/home">DEPSI</Link></li>
-                        <li className="breadcrumb-item"><Link to="/admin/documentaryresources">Ressources documenatires</Link></li>
+                        <li className="breadcrumb-item"><Link to="/admin/documentaryresources">Ressources documentaires</Link></li>
                         <li className="breadcrumb-item active">Détails</li>
                     </ol>
                 </nav>
@@ -252,6 +254,19 @@ function DocumentaryShow() {
                                                     disabled={true}/>
                                                 <label htmlFor="thematic">Thématique <span className="text-bold text-danger text-sm">*</span></label>
                                             </div>
+                                            <div className="form-floating mx-4 mb-3">
+                                                <textarea 
+                                                    onChange={(event)=>{setSummary(event.target.value)}}
+                                                    value={summary}
+                                                    className="form-control border border-outline-primary h-auto"
+                                                    id="summary"
+                                                    rows="8"
+                                                    name="summary"
+                                                    placeholder="Résumé"
+                                                    disabled={true}></textarea>
+                                                <label htmlFor="summary">Résumé <span className="text-bold text-danger text-sm"></span></label>
+                                            </div>
+                                            
                                         </div>
                                     </>
                                 }

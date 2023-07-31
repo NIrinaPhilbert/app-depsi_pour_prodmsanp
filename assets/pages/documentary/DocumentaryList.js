@@ -247,11 +247,11 @@ function DocumentaryList() {
     return (
         <Layout>
             <div className="pagetitle">
-                <h1>Ressources documenatires</h1>
+                <h1>Ressources documentaires</h1>
                 <nav className="mt-2">
                     <ol className="breadcrumb">
                         <li className="breadcrumb-item"><Link to="/admin/home">DEPSI</Link></li>
-                        <li className="breadcrumb-item"><Link to="/admin/documentaryresources">Ressources documenatires</Link></li>
+                        <li className="breadcrumb-item"><Link to="/admin/documentaryresources">Ressources documentaires</Link></li>
                         <li className="breadcrumb-item active">Liste</li>
                     </ol>
                 </nav>

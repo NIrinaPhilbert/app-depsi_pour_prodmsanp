@@ -44,8 +44,9 @@ const acceptCoverFormat = [
 
 function DocumentaryCreate() {
     const [title, setTitle] = useState('')
+    const [summary, setSummary] = useState('')
     const [date, setDate] = useState('')
-    const [author, setAuthor] = useState('')
+    const [author, setAuthor] = useState('NA')
     const [posttype, setPosttype] = useState('')
     const [direction, setDirection] = useState('')
     const [directionOptions, setDirectionOptions] = useState([])
@@ -179,6 +180,7 @@ function DocumentaryCreate() {
             formData.append("direction", direction)
             formData.append("entitys", entitys)
             formData.append("thematic", themes)
+            formData.append("summary", summary)
             axios.post('/api/docs/create', formData)
                 .then(function (response) {
                     hideLoader()
@@ -398,11 +400,11 @@ function DocumentaryCreate() {
     return (
         <Layout>
             <div className="pagetitle">
-                <h1>Ressources documenatires</h1>
+                <h1>Ressources documentaires</h1>
                 <nav className="mt-2">
                     <ol className="breadcrumb">
                         <li className="breadcrumb-item"><Link to="/admin/home">DEPSI</Link></li>
-                        <li className="breadcrumb-item"><Link to="/admin/documentaryresources">Ressources documenatires</Link></li>
+                        <li className="breadcrumb-item"><Link to="/admin/documentaryresources">Ressources documentaires</Link></li>
                         <li className="breadcrumb-item active">Ajout</li>
                     </ol>
                 </nav>
@@ -413,7 +415,7 @@ function DocumentaryCreate() {
                         <div className="card mt-3">
                             <form onSubmit={e => { e.preventDefault(); handleSave(); }}>
                                 <div className="card-body p-3">
-                                    <div className="mt-2 mb-4"><h4>Créer une nourvelle ressource</h4></div>
+                                    <div className="mt-2 mb-4"><h4>Créer une nouvelle ressource</h4></div>
                                     <hr className="mt-2 mb-4"/>
                                     <div className="w-100 mb-4">
                                         {isGeneralError &&
@@ -561,6 +563,17 @@ function DocumentaryCreate() {
                                                 className="form-control border border-outline-primary bg-white"
                                                 onChange={changeEntitys} />
                                             <label htmlFor="entitys">Entité source <span className="text-bold text-danger text-sm">*</span></label>
+                                        </div>
+                                        <div className="form-floating mx-4 mb-3">
+                                            <textarea 
+                                                onChange={(event)=>{setSummary(event.target.value)}}
+                                                value={summary}
+                                                className="form-control border border-outline-primary h-auto"
+                                                id="summary"
+                                                rows="8"
+                                                name="summary"
+                                                placeholder="Résumé"></textarea>
+                                            <label htmlFor="summary">Résumé <span className="text-bold text-danger text-sm"></span></label>
                                         </div>
                                         
                                     </div>

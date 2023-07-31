@@ -52,6 +52,7 @@ class EntitiesController extends AbstractController
      */
     public function dirOptions(ManagerRegistry $doctrine, Security $security, ParameterBagInterface $params): Response
     {
+        
         $stateService = new StateService($security, $params);
         $stateAuth = $stateService->checkState();
 
