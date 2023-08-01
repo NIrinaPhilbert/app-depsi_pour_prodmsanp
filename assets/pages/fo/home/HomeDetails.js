@@ -51,7 +51,7 @@ function HomeDetails() {
                 <>
                     <div className="card shadow border-none border-radius-0">
                         <div className="card-header bg-white p-3">
-                            <h4 className="w-100 mb-0">Détails d'une ressource</h4>
+                            <h4 className="w-100 mb-0">Détail de l'information</h4>
                         </div>
                         <div className="card-body p-3">
                             <div className="w-100 my-4">

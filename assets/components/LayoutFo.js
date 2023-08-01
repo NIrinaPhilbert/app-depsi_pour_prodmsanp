@@ -178,7 +178,7 @@ const LayoutFo = ({children}) =>{
 										<div className="carousel-container">
 											<div className="container">
 												<h2 className="animate__animated animate__fadeInDown">{doc.title}</h2>
-												<article className="animate__animated animate__fadeInUp">{parse(doc.textContent)}</article>
+												<article className="animate__animated animate__fadeInUp"></article>
 												<Link to={`/details/${doc.id}`} class="btn-get-started animate__animated animate__fadeInUp scrollto">Voir plus</Link>
 											</div>
 										</div>
