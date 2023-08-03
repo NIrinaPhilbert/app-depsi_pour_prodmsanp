@@ -50,34 +50,28 @@ function HomeDetails() {
                 :
                 <>
                     <div className="card shadow border-none border-radius-0">
-                        <div className="card-header bg-white p-3">
-                            <h4 className="w-100 mb-0">Détail de l'information</h4>
-                        </div>
+
                         <div className="card-body p-3">
                             <div className="w-100 my-4">
-                                {imageName != '' &&
-                                    <div className="mx-4 mb-3">
-                                        <label className="w-100 mb-2" htmlFor="cover-img">Photo de couverture <span className="text-bold text-danger text-sm">*</span></label>
-                                        <img id="cover-img" src={imageFile} className="img-thumbnail w-50 mb-2" />
-                                    </div>
-                                }
-                                <div className="form-floating mx-4 mb-3">
-                                    <input 
-                                        value={title}
-                                        type="text"
-                                        className="form-control border-radius-0 border-outline-primary bg-white"
-                                        id="title"
-                                        name="title"
-                                        placeholder="Titre"
-                                        disabled={true}/>
-                                    <label htmlFor="title">Titre <span className="text-bold text-danger text-sm">*</span></label>
-                                </div>
+                                
                                 <div className="mx-4 mb-3">
-                                    <label className="mb-2">Contenu</label>
-                                    <p className="form-control border-radius-0 border-outline-primary bg-white w-100 h-auto pre">
+                                    <div class="jumbotron">
+                                        <h3>
+                                            {title}
+                                        </h3>
+                                    </div>
+                                </div>
+                                <div className="jumbotron mx-4 mb-3">
+                                    <p className="border-radius-0 border-outline-primary bg-white w-100 h-auto pre">
                                         {parse(textContent)}
                                     </p>
                                 </div>
+                                {imageName != '' &&
+                                    <div className="mx-4 mb-3">
+        
+                                        <img id="cover-img" src={imageFile} className="img-thumbnail w-50 mb-2" />
+                                    </div>
+                                }
                             </div>
                         </div>
                         <div className="card-footer bg-white text-center p-3">
