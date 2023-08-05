@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useRef} from 'react'
 import { Link, useParams, useNavigate } from "react-router-dom"
 import Layout from "../../components/Layout"
 import BootstrapSelect from 'react-bootstrap-select-dropdown'
@@ -7,6 +7,7 @@ import 'react-toastify/dist/ReactToastify.css'
 import DatePicker from 'react-datepicker'
 import "react-datepicker/dist/react-datepicker.css"
 import axios from 'axios'
+import { Editor } from '@tinymce/tinymce-react';
 
 let document_access_keys = process.env.DOCUMENT_ACCESS_KEYS
 document_access_keys = document_access_keys.split('|')
@@ -59,6 +60,8 @@ function DocumentaryEdit() {
     const [msgGeneral, setMsgGeneral] = useState('')
     const [isFetched, setIsFetched] = useState(false)
     const navigate = useNavigate()
+    const isSmallScreen = window.matchMedia('(max-width: 1023.5px)').matches
+    const summaryRef = useRef(null)
 
     useEffect(() => {
         setIsGeneralError(false)
@@ -167,7 +170,8 @@ function DocumentaryEdit() {
             formData.append("direction", direction)
             formData.append("entitys", entitys)
             formData.append("thematic", themes)
-            formData.append("summary", summary)
+            //formData.append("summary", summary)
+            formData.append("summary", summaryRef.current.getContent())
             axios.post(`/api/docs/edit/${id}`, formData)
                 .then(function (response) {
                     console.log('response='+response)
@@ -543,6 +547,7 @@ function DocumentaryEdit() {
                                                     <label htmlFor="entitys">Entité source <span className="text-bold text-danger text-sm">*</span></label>
                                                 </div>
                                                 <div className="form-floating mx-4 mb-3">
+                                                    {/*
                                                     <textarea 
                                                         onChange={(event)=>{setSummary(event.target.value)}}
                                                         value={summary}
@@ -551,6 +556,21 @@ function DocumentaryEdit() {
                                                         rows="8"
                                                         name="summary"
                                                         placeholder="Résumé"></textarea>
+                                                    */}
+                                                    <Editor
+                                                        onInit={(evt, editor) => summaryRef.current = editor}
+                                                        initialValue={summary}
+                                                        init={{
+                                                            language: 'fr_FR',
+                                                            height: 500,
+                                                            toolbar_sticky: true,
+                                                            toolbar_sticky_offset: isSmallScreen ? 102 : 108,
+                                                            menubar: 'file edit view insert format tools table help',
+                                                            plugins: 'preview importcss searchreplace autolink autosave save directionality code visualblocks visualchars fullscreen image link media template codesample table charmap pagebreak nonbreaking anchor insertdatetime advlist lists wordcount help charmap quickbars emoticons',
+                                                            toolbar: 'undo redo | bold italic underline strikethrough | fontfamily fontsize blocks | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist | forecolor backcolor removeformat | pagebreak | charmap emoticons | fullscreen  preview save print | insertfile image media template link anchor codesample | ltr rtl',
+                                                            content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
+                                                        }}
+                                                    />
                                                     <label htmlFor="summary">Résumé <span className="text-bold text-danger text-sm"></span></label>
                                                 </div>
                                                 

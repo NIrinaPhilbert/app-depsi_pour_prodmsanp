@@ -59,7 +59,9 @@ class EventFOController extends AbstractController
         }
 
         $data =  [
-            'long_description' => $event->getLongDescription()
+            'courte_description' => $event->getShortDescription(),
+            'long_description' => $event->getLongDescription(),
+            'titreevenement' => $event->getTitle()
         ];
 
         return $this->json($data);

@@ -42,7 +42,7 @@ class DocumentaryResourcesRepository extends ServiceEntityRepository
     public function getDataByNombre($nombre): array
    {
        return $this->createQueryBuilder('d')
-           ->orderBy('d.date', 'DESC')
+           ->orderBy('d.id', 'DESC')
            ->setMaxResults($nombre)
            ->getQuery()
            ->getResult()

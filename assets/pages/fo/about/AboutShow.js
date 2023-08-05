@@ -46,6 +46,7 @@ function AboutShow() {
                         <div className="card-body pre">
                             {parse(textContent)}
                         </div>
+                        
                     </div>
                 </>
             }

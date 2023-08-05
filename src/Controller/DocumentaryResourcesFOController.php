@@ -28,7 +28,8 @@ class DocumentaryResourcesFOController extends AbstractController
         if (!file_exists($docFolder)) mkdir($docFolder, 0777, true);
         $docs = $doctrine->getManager()
             ->getRepository(DocumentaryResources::class)
-            ->findAll();
+            ->findBy(array(), array('id' => 'DESC'));
+            //->findAll();
         foreach ($docs as $doc) {
             $docFiles = array();
             $docNames = array();
@@ -129,6 +130,7 @@ class DocumentaryResourcesFOController extends AbstractController
         $data = [
             'id' => $doc->getId(),
             'title' => $doc->getTitle(),
+            'summary' => $doc->getSummary(),
             'coverFile' => !is_null($doc->getCover()) ? str_replace("../public/", "/", $docFolder).$doc->getCover() : '',
             'coverName' => !is_null($doc->getCover()) ? $doc->getCover() : '',
             'docIcons' => $docIcons,

@@ -8,7 +8,9 @@ import axios from 'axios'
  
 function EventShow() {
     const [id, setId] = useState(useParams().id)
+    const [titreevenement, setTitreEvenement] = useState('')
     const [longDescription, setLongDescription] = useState('')
+    const [courteDescription, setCourteDescription] = useState('')
     const [isFetched, setIsFetched] = useState(false)
     const navigate = useNavigate()
 
@@ -22,6 +24,8 @@ function EventShow() {
         axios.get(`/api/events_fo/show/${id}`)
         .then(function (response) {
             setIsFetched(true)
+            setTitreEvenement(response.data.titreevenement)
+            setCourteDescription(response.data.courte_description)
             setLongDescription(response.data.long_description)
             hideLoader()
         })
@@ -49,7 +53,32 @@ function EventShow() {
                         <div className="col-12 mb-4">
                             <div className="card border-radius-0 border-none shadow">
                                 <div className="card-body pre">
-                                    {parse(longDescription)}
+                                    <div className="w-100 my-4">
+                                    
+                                        <div className="mx-4 mb-3">
+                                            <div className="jumbotron">
+                                                <h3>
+                                                    {titreevenement}
+                                                </h3>
+                                            </div>
+                                        </div>
+                                        <div className="jumbotron mx-4 mb-3">
+                                            <p className="border-radius-0 border-outline-primary bg-white w-100 h-auto pre">
+                                                {parse(longDescription)}
+                                            </p>
+                                        </div>
+                                       
+                                        
+                                    </div>
+                                    
+                                </div>
+                                <div className="card-footer bg-white text-center p-3">
+                                    <Link
+                                        to={`/`}
+                                        className="btn btn btn-sm btn-outline-secondary border-radius-0">
+                                        <i className="bi bi-arrow-left me-1"></i>
+                                        Retour accueil
+                                    </Link>
                                 </div>
                             </div>
                         </div>

@@ -33,7 +33,8 @@ class HomeFOController extends AbstractController
         if (!file_exists($docFolder)) mkdir($docFolder, 0777, true);
         $docs = $doctrine->getManager()
             ->getRepository(Home::class)
-            ->findAll();      
+            ->getHomeDataByNombre(10) ;
+            //->findAll();      
         foreach ($docs as $doc) {
             $data[] = [
                 'id' => $doc->getId(),

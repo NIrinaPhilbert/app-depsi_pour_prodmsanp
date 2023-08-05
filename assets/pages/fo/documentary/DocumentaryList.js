@@ -57,7 +57,7 @@ function DocumentaryList() {
             name: 'Date',
             selector: row => row.date,
             sortable: true,
-            // filter: 'text',
+            //filter: 'date',
             cell: row => <div style={{display: 'block'}}>{row.date}</div>
         },
         /*{

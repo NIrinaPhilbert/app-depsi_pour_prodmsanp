@@ -4,6 +4,7 @@ import LayoutFo from "../../../components/LayoutFo"
 import Swal from 'sweetalert2'
 import BootstrapSelect from 'react-bootstrap-select-dropdown'
 import { toast } from 'react-toastify'
+import parse from 'html-react-parser'
 import 'react-toastify/dist/ReactToastify.css'
 import DatePicker from 'react-datepicker'
 import "react-datepicker/dist/react-datepicker.css"
@@ -21,6 +22,7 @@ const accesses = document_access_keys.reduce((arr, key, index) => {
 function DocumentaryShow() {
     const id = useParams().id
     const [title, setTitle] = useState('')
+    const [summary, setSummary] = useState('')
     const [date, setDate] = useState('')
     const [author, setAuthor] = useState('')
     const [pubtype, setPubtype] = useState('')
@@ -49,6 +51,7 @@ function DocumentaryShow() {
         .then(function (response) {
             let doc = response.data
             setTitle(doc.title)
+            setSummary(doc.summary)
             setDate(doc.date)
             setAuthor(doc.author)
             setDirection(doc.direction)
@@ -146,18 +149,116 @@ function DocumentaryShow() {
                         </div>
                         <div className="card-body p-3">
                             <div className="w-100 my-4">
-                                {coverName != '' &&
-                                    <div className="mx-4 mb-3">
-                                        <label className="w-100 mb-2" htmlFor="cover-img">Photo de couverture <span className="text-bold text-danger text-sm">*</span></label>
-                                        <img id="cover-img" src={coverFile} className="img-thumbnail w-50 mb-2" />
+                                <div className='row'>
+                                    <div className="col-sm-6 col-md-6">
+                                        {coverName != '' &&
+                                            <div className="mx-4 mb-3">
+                                                <label className="w-100 mb-2" htmlFor="cover-img">Photo de couverture</label>
+                                                <img id="cover-img" src={coverFile} className="img-thumbnail w-100 mb-2" />
+                                            </div>
+                                        }
                                     </div>
-                                }
+                                    <div className='col-sm-6 col-md-6'>
+                                        <label className="w-100 mb-2">Informations du document</label>
+                                        {/*
+                                        <div className="form-floating mb-3">
+                                            <input 
+                                                value={accesses[documentAccess]}
+                                                type="text"
+                                                className="form-control border-radius-0 border-outline-primary bg-white"
+                                                id="document_access"
+                                                name="document_access"
+                                                placeholder="Type d'accès"
+                                                disabled={true}/>
+                                            <label htmlFor="document_access">Type d'accès</label>
+                                        </div>
+                                        */}
+                                        <div className="form-floating mb-3">
+                                            <input 
+                                                onChange={(event)=>{setTitle(event.target.value)}}
+                                                value={title}
+                                                type="text"
+                                                className="form-control border-radius-0 border-outline-primary bg-white"
+                                                id="title"
+                                                name="title"
+                                                placeholder="Titre"
+                                                disabled={true}/>
+                                            <label htmlFor="title">Titre</label>
+                                        </div>
+                                        <div className="form-floating mb-3">
+                                            <input
+                                                className="form-control border-radius-0 border-outline-primary bg-white"
+                                                value={date}
+                                                onChange={(value)=>{setDate(value)}}
+                                                id="date"
+                                                name="date"
+                                                placeholder="Date de publication"
+                                                disabled={true}
+                                            />
+                                            <label htmlFor="date">Date de publication</label>
+                                        </div>
+                                        
+                                        <div className="form-floating mb-3">
+                                            <input 
+                                                onChange={(event)=>{setPubtype(event.target.value)}}
+                                                value={pubtype}
+                                                type="text"
+                                                className="form-control border-radius-0 border-outline-primary bg-white"
+                                                id="pubtype"
+                                                name="pubtype"
+                                                placeholder="Type de publication"
+                                                disabled={true}/>
+                                            <label htmlFor="pubtype">Type de publication </label>
+                                        </div>
+                                        <div className="form-floating mb-3">
+                                            <input 
+                                                onChange={(event)=>{setThematic(event.target.value)}}
+                                                value={thematic}
+                                                type="text"
+                                                className="form-control border-radius-0 border-outline-primary bg-white"
+                                                id="thematic"
+                                                name="thematic"
+                                                placeholder="Thématique"
+                                                disabled={true}/>
+                                            <label htmlFor="thematic">Thématique</label>
+                                        </div>
+                                        <div className="form-floating mb-3">
+                                            <input 
+                                                onChange={(event)=>{setDirection(event.target.value)}}
+                                                value={direction}
+                                                type="text"
+                                                className="form-control border-radius-0 border-outline-primary bg-white"
+                                                id="direction"
+                                                name="direction"
+                                                placeholder="Direction"
+                                                disabled={true}/>
+                                            <label htmlFor="direction">Direction</label>
+                                        </div>
+                                        <div className="form-floating mb-3">
+                                            <input 
+                                                onChange={(event)=>{setEntitys(event.target.value)}}
+                                                value={entitys}
+                                                type="text"
+                                                className="form-control border-radius-0 border-outline-primary bg-white"
+                                                id="entitys"
+                                                name="entitys"
+                                                placeholder="Entité source"
+                                                disabled={true}/>
+                                            <label htmlFor="entitys">Entité source</label>
+                                        </div>
+                                    </div>
+                                    
+
+                                </div>
+                                <div className="rrow mx-4 px-2 mb-4 py-2 card">
+                                    {parse(summary)}
+                                </div>
                                 {docNames != '' &&
                                     <>
                                         {(documentAccess == document_access_keys[0] || isConnected)
                                             ? <>
                                                 <div className="row mx-4 mb-4">
-                                                    <label className="form-label" htmlFor="doc">Document</label>
+                                                    {/*<label className="form-label" htmlFor="doc">Document</label>*/}
                                                     {docFiles.map((dfile, keyfiler)=>{
                                                         return (
                                                             <div className="col-lg-3 col-md-3 col-sm-4 col-xs-6 mt-4" key={keyfiler}>
@@ -213,101 +314,8 @@ function DocumentaryShow() {
                                         }
                                     </>
                                 }
-                                <div className="form-floating mx-4 mb-3">
-                                    <input 
-                                        value={accesses[documentAccess]}
-                                        type="text"
-                                        className="form-control border-radius-0 border-outline-primary bg-white"
-                                        id="document_access"
-                                        name="document_access"
-                                        placeholder="Type d'accès"
-                                        disabled={true}/>
-                                    <label htmlFor="document_access">Type d'accès <span className="text-bold text-danger text-sm">*</span></label>
-                                </div>
-                                <div className="form-floating mx-4 mb-3">
-                                    <input 
-                                        onChange={(event)=>{setTitle(event.target.value)}}
-                                        value={title}
-                                        type="text"
-                                        className="form-control border-radius-0 border-outline-primary bg-white"
-                                        id="title"
-                                        name="title"
-                                        placeholder="Titre"
-                                        disabled={true}/>
-                                    <label htmlFor="title">Titre <span className="text-bold text-danger text-sm">*</span></label>
-                                </div>
-                                <div className="form-floating mx-4 mb-3">
-                                    <input
-                                        className="form-control border-radius-0 border-outline-primary bg-white"
-                                        value={date}
-                                        onChange={(value)=>{setDate(value)}}
-                                        id="date"
-                                        name="date"
-                                        placeholder="Date"
-                                        disabled={true}
-                                    />
-                                    <label htmlFor="date">Date <span className="text-bold text-danger text-sm">*</span></label>
-                                </div>
-                                <div className="form-floating mx-4 mb-3">
-                                    <input 
-                                        onChange={(event)=>{setAuthor(event.target.value)}}
-                                        value={author}
-                                        type="text"
-                                        className="form-control border-radius-0 border-outline-primary bg-white"
-                                        id="author"
-                                        name="author"
-                                        placeholder="Auteur"
-                                        disabled={true}/>
-                                    <label htmlFor="author">Auteur <span className="text-bold text-danger text-sm">*</span></label>
-                                </div>
-                                <div className="form-floating mx-4 mb-3">
-                                    <input 
-                                        onChange={(event)=>{setPubtype(event.target.value)}}
-                                        value={pubtype}
-                                        type="text"
-                                        className="form-control border-radius-0 border-outline-primary bg-white"
-                                        id="pubtype"
-                                        name="pubtype"
-                                        placeholder="Type de publication"
-                                        disabled={true}/>
-                                    <label htmlFor="pubtype">Type de publication <span className="text-bold text-danger text-sm">*</span></label>
-                                </div>
-                                <div className="form-floating mx-4 mb-3">
-                                    <input 
-                                        onChange={(event)=>{setDirection(event.target.value)}}
-                                        value={direction}
-                                        type="text"
-                                        className="form-control border-radius-0 border-outline-primary bg-white"
-                                        id="direction"
-                                        name="direction"
-                                        placeholder="Direction"
-                                        disabled={true}/>
-                                    <label htmlFor="direction">Direction <span className="text-bold text-danger text-sm">*</span></label>
-                                </div>
-                                <div className="form-floating mx-4 mb-3">
-                                    <input 
-                                        onChange={(event)=>{setEntitys(event.target.value)}}
-                                        value={entitys}
-                                        type="text"
-                                        className="form-control border-radius-0 border-outline-primary bg-white"
-                                        id="entitys"
-                                        name="entitys"
-                                        placeholder="Entité source"
-                                        disabled={true}/>
-                                    <label htmlFor="entitys">Entité source <span className="text-bold text-danger text-sm">*</span></label>
-                                </div>
-                                <div className="form-floating mx-4 mb-3">
-                                    <input 
-                                        onChange={(event)=>{setThematic(event.target.value)}}
-                                        value={thematic}
-                                        type="text"
-                                        className="form-control border-radius-0 border-outline-primary bg-white"
-                                        id="thematic"
-                                        name="thematic"
-                                        placeholder="Thématique"
-                                        disabled={true}/>
-                                    <label htmlFor="thematic">Thématique <span className="text-bold text-danger text-sm">*</span></label>
-                                </div>
+                                
+                                
                             </div>
                         </div>
                         <div className="card-footer bg-white text-center p-3">

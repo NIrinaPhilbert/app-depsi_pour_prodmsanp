@@ -38,6 +38,15 @@ class HomeRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
+    public function getHomeDataByNombre($nombre): array
+    {
+        return $this->createQueryBuilder('h')
+            ->orderBy('h.id', 'DESC')
+            ->setMaxResults($nombre)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 
 //    /**
 //     * @return Home[] Returns an array of Home objects
