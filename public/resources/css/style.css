@@ -393,6 +393,7 @@ a:hover {
 .fo .heroChart .carousel-container {
   top: 0;
 }
+.logo_bas{max-height:60px!important;}
 
 .fo .hero .container {
   text-align: center;
@@ -418,7 +419,36 @@ a:hover {
   display: flex;
   justify-content: center;
 }
+/* amelioration 07082023 */
+.fo .doc-hero {
+  height: 90vh;
+}
 
+.fo .hero .carousel-inner .doc-item {
+  padding: 7px;
+  display: flex;
+  justify-content: flex-start;
+/*  align-items: center;*/
+}
+.fo .hero .carousel-inner .doc-item .doc-img {
+  border: 10px solid transparent;
+  border-radius: 1.5em;
+  position: relative;
+  height: 100%;
+}
+
+.fo .hero .carousel-inner .doc-item .doc-img-3 {
+  width: 100%;
+}
+
+.fo .hero .carousel-inner .doc-item .doc-img-2 {
+  width: 66.5%;
+}
+
+.fo .hero .carousel-inner .doc-item .doc-img-1 {
+  width: 57.5%;
+}
+/* /. amelioration 07082023 */
 .document-title {
   text-overflow: ellipsis;
   overflow: hidden;
@@ -433,13 +463,16 @@ a:hover {
 .fo .hero .carousel-inner .active.carousel-item-end {
   opacity: 0;
 }
-
+/* amelioration 09082023 */
 .fo .hero .carousel-inner .active,
 .fo .hero .carousel-inner .carousel-item-next.carousel-item-start,
 .fo .hero .carousel-inner .carousel-item-prev.carousel-item-end {
   opacity: 1;
-  transition: 0.5s;
+  /* Eto ny fanovana ny "delai de transition" an'ireo slide */
+  /*transition: 0.5s;*/
+  transition: 1s;
 }
+/* /. amelioration 09082023 */
 
 .fo .hero .carousel-inner .carousel-item-next,
 .fo .hero .carousel-inner .carousel-item-prev,
@@ -448,7 +481,7 @@ a:hover {
   left: 0;
   transform: translate3d(0, 0, 0);
 }
-
+/* amelioration 09082023 */
 .fo .hero .carousel-control-next-icon,
 .fo .hero .carousel-control-prev-icon {
   background: none;
@@ -456,29 +489,33 @@ a:hover {
   line-height: 0;
   width: auto;
   height: auto;
-  background: rgba(255, 255, 255, 0.2);
+  background: #000;
+  /*background: rgba(255, 255, 255, 0.2);*/
   border-radius: 50px;
   transition: 0.3s;
-  color: rgba(255, 255, 255, 0.5);
+  /*color: rgba(255, 255, 255, 0.5);*/
+  color: rgba(255, 255, 255, 0.8);
   width: 54px;
   height: 54px;
   display: flex;
   align-items: center;
   justify-content: center;
 }
-
+/* /. amelioration 09082023 */
 .fo .heroChart .carousel-control-next-icon,
 .fo .heroChart .carousel-control-prev-icon {
  background-color: rgba(0, 0, 0, 0.5);
  color: #fff;
 }
-
+/* amelioration 09082023 */
 .fo .hero .carousel-control-next-icon:hover,
 .fo .hero .carousel-control-prev-icon:hover {
-  background: rgba(255, 255, 255, 0.3);
-  color: rgba(255, 255, 255, 0.8);
+  /*background: rgba(255, 255, 255, 0.3);
+  color: rgba(255, 255, 255, 0.8);*/
+  background: rgba(0, 0, 0, 0.8);
+  color: rgba(255, 255, 255, 0.7);
 }
-
+/* /. amelioration 09082023 */
 .fo .heroChart .carousel-control-next-icon:hover,
 .fo .heroChart .carousel-control-prev-icon:hover {
   background: rgba(0, 0, 0, 0.3);

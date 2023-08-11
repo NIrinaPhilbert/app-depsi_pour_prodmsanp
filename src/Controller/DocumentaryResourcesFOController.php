@@ -28,8 +28,11 @@ class DocumentaryResourcesFOController extends AbstractController
         if (!file_exists($docFolder)) mkdir($docFolder, 0777, true);
         $docs = $doctrine->getManager()
             ->getRepository(DocumentaryResources::class)
-            ->findBy(array(), array('id' => 'DESC'));
+            //->findBy(array(), array('id' => 'DESC')); 
             //->findAll();
+            // amelioration 0708223
+            ->findBy([], ['date' => 'DESC']);
+            // /. amelioration 0708223
         foreach ($docs as $doc) {
             $docFiles = array();
             $docNames = array();
@@ -50,7 +53,10 @@ class DocumentaryResourcesFOController extends AbstractController
                 'docFiles' => $docFiles,
                 'docNames' => !empty($docNames) ? $docNames : '',
                 'titleText' => $doc->getTitle(),
-                'date' => $doc->getDate()->format('d/m/Y'),
+                //'date' => $doc->getDate()->format('d/m/Y'),
+                // amelioration 0708223
+                'date' => $doc->getDate()->format('Y-m-d'),
+                // /. amelioration 0708223
                 'author' => $doc->getAuthor(),
                 //'pub_type' => $doc->getPubType(),
                 'pub_type' => $doc->getPostType()->getDesignation(),
@@ -68,14 +74,18 @@ class DocumentaryResourcesFOController extends AbstractController
     /**
      * @Route("/docs_fo/latest", name="documentary_fo_latest", methods={"GET"})
      */
-    public function latest(ManagerRegistry $doctrine): Response
+    public function latest(ManagerRegistry $doctrine, DocumentaryResourcesRepository $documentaryResourcesRepository): Response
     {
         $data = [];
         $docFolder = '../public/files/documentary/';
         if (!file_exists($docFolder)) mkdir($docFolder, 0777, true);
         $docs = $doctrine->getManager()
             ->getRepository(DocumentaryResources::class)
-            ->getDataByNombre(10);
+            //->getDataByNombre(10);
+            // amelioration 09082023
+            ->getDataByNombre(9);
+            // /. amelioration 09082023
+
         foreach ($docs as $doc) {
             $data[] = [
                 'id' => $doc->getId(),
@@ -86,7 +96,11 @@ class DocumentaryResourcesFOController extends AbstractController
             ];
         }
   
-        return $this->json($data);
+        //return $this->json($data);
+        // amelioration 07082023
+        return $this->json($documentaryResourcesRepository->groupArrayPerNumber($data, 3));
+        // /. amelioration 07082023
+
     }
 
     /**

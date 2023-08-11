@@ -169,11 +169,28 @@ const LayoutFo = ({children}) =>{
 						return (
 							<div className="carousel-inner" role="listbox" key={key}>
 								{currentRoute.includes('/documentaryresources')
-									? <Link to={`/documentaryresources/${doc.id}`}>
-										<div className={`carousel-item ${key == 0 ? 'active' : ''}`}>
-											<img className="h-100 w-auto" style={{zIndex: "0"}} src={doc.imageFile} />
-										</div>
-									</Link>
+
+									? <>
+										{/* amelioration 07082023 */}
+											<div className={`carousel-item doc-item ${key == 0 ? 'active' : ''}`} key={"keySlide"+key}>
+												{doc.map((docData, keyDoc) => {
+													return (
+														<Link className="doc-link" to={`/documentaryresources/${docData.id}`} key={"keyData"+keyDoc}>
+															{doc.length == 3 &&
+																<img className={`doc-img doc-img-3`} style={{zIndex: "0"}} src={docData.imageFile} />
+															}
+															{doc.length == 2 &&
+																<img className={`doc-img doc-img-2`} style={{zIndex: "0"}} src={docData.imageFile} />
+															}
+															{doc.length == 1 &&
+																<img className={`doc-img doc-img-1`} style={{zIndex: "0"}} src={docData.imageFile} />
+															}
+														</Link>
+													)
+												})}
+											</div>
+										{/* /. amelioration 07082023 */}
+									</>
 									: <div className={`carousel-item ${key == 0 ? 'active' : ''}`} style={{ backgroundImage: `url(${doc.imageFile})` }}>
 										<div className="carousel-container">
 											<div className="container">
@@ -257,6 +274,14 @@ Bâtiment Administratif du Ministère de la Santé Publique Ambohimiandra-ANTANA
 					</div>
 					<div className="credits">
 						Ministère de la santé publique
+					</div>
+					<div className="credits">
+						<h1 className="logo me-auto">
+							<Link to="/">
+								<img src="/resources/img/who-logo-png-transparent.png" alt="Logo" className="logo_bas"/>
+								
+							</Link>
+						</h1>
 					</div>
 				</div>
 			</footer>

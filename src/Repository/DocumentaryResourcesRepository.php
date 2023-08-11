@@ -76,5 +76,26 @@ class DocumentaryResourcesRepository extends ServiceEntityRepository
 
         return $size . ' ' . $units[$index];
     }
+    // amelioration 07082023
+    public function groupArrayPerNumber($data, $number) {
+        $groupedData = [];
+        $tempGroup = [];
+
+        foreach ($data as $item) {
+            $tempGroup[] = $item;
+
+            if (count($tempGroup) === $number) {
+                $groupedData[] = $tempGroup;
+                $tempGroup = [];
+            }
+        }
+
+        if (!empty($tempGroup)) {
+            $groupedData[] = $tempGroup;
+        }
+
+        return $groupedData;
+    }
+    // /. amelioration 07082023
 
 }

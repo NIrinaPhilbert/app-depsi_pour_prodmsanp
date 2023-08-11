@@ -12,6 +12,13 @@ function EntitiesList() {
     const  [isFecthed, setIsFetched] = useState(false)
     const navigate = useNavigate()
     const shouldRedirect = (localStorage.getItem('mysession') === null) ? true : false
+    // amelioration 07082023
+    const [entitiesListSearch, setEntitiesListSearch] = useState([])
+    const initialSearch = {
+        item: ''
+    }
+    const [searchData, setSearchData] = useState(initialSearch)
+    // /. amelioration 07082023
 
     if (shouldRedirect) {
     	showLoader()
@@ -89,6 +96,9 @@ function EntitiesList() {
                 return entity
             })
 			setEntitiesList(response.data)
+            // amelioration 07082023
+            setEntitiesListSearch(response.data)
+            // /. amelioration 07082023
 			hideLoader()
         })
         .catch(function (error) {
@@ -106,6 +116,9 @@ function EntitiesList() {
     }
 
     const handleRefresh = () => {
+        // amelioration 07082023
+        setSearchData(initialSearch)
+        // /. amelioration 07082023
     	fetchEntitiesList()
     }
 
@@ -171,7 +184,20 @@ function EntitiesList() {
             }
           })
     }
-  
+    // amelioration 07082023
+    const searchEntities = (key, val) => {
+        var listInformations = [...entitiesListSearch]
+        searchData[key] = val
+        setSearchData(searchData)
+        var filteredEntities = listInformations.filter((thisEntity) => {
+            return (
+                thisEntity.name.toLowerCase().includes(searchData.item.toLowerCase()) || 
+                thisEntity.direction.toLowerCase().includes(searchData.item.toLowerCase())
+            )
+        })
+        setEntitiesList(filteredEntities)
+    }
+    // /. amelioration 07082023
     return (
         <Layout>
             <div className="pagetitle">
@@ -203,6 +229,16 @@ function EntitiesList() {
                                         Actualiser
                                     </button>
             					</div>
+                                {/* amelioration 07082023 */}
+                                {isFecthed &&
+                                    <div className="mb-2 mt-2 float-end">
+                                        <div className="form-floating">
+                                            <input style={{"minWidth": "300px"}} id="item" type="text" className="form-control form-control-sm border-radius-0" defaultValue={searchData.item} onChange={(e)=>searchEntities('item', e.target.value)} placeholder="Tapez pour chercher..." />
+                                            <label htmlFor="item">Recherche par nom ou direction</label>
+                                        </div>
+                                    </div>
+                                }
+                                {/* /. amelioration 07082023 */}
                                 <DataTable 
                                     columns={columns} 
                                     data={entitiesList} 

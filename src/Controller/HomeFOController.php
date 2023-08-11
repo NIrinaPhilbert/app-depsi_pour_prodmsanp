@@ -23,11 +23,18 @@ class HomeFOController extends AbstractController
     public function index(ManagerRegistry $doctrine): Response
     {
         $entityManager = $doctrine->getManager();
-        $visitor = new Visitor();
-        $visitor->setInfos("IP " . $_SERVER['REMOTE_ADDR'] . "; " . $_SERVER['HTTP_USER_AGENT']);
-        $visitor->setCreatedAt(new \DateTime(date('Y-m-d H:i:s')));
-        $entityManager->persist($visitor);
-        $entityManager->flush();
+        // evol nombre de visiteurs 10082023
+        $isIpVisitorExist = count($entityManager
+                    ->getRepository(Visitor::class)
+                    ->findByIp($_SERVER['REMOTE_ADDR'], date("Y-m-d"))) > 0 ? true : false;
+        if (!$isIpVisitorExist) {
+            $visitor = new Visitor();
+            $visitor->setInfos("IP " . $_SERVER['REMOTE_ADDR'] . "; " . $_SERVER['HTTP_USER_AGENT']);
+            $visitor->setCreatedAt(new \DateTime(date('Y-m-d H:i:s')));
+            $entityManager->persist($visitor);
+            $entityManager->flush();
+        }
+        // /. evol nombre de visiteurs 10082023
         $data = [];
         $docFolder = '../public/files/home/';
         if (!file_exists($docFolder)) mkdir($docFolder, 0777, true);

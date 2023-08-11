@@ -60,7 +60,10 @@ function DocumentaryList() {
             name: 'Date',
             selector: row => row.date,
             sortable: true,
-            cell: row => <div style={{display: 'block'}}>{row.date}</div>
+            //cell: row => <div style={{display: 'block'}}>{row.date}</div>
+            // amelioration 07082023
+            cell: row => <div style={{display: 'block'}}>{formatDate(row.date)}</div>
+            // /. amelioration 07082023
         },
         /*
         {
@@ -108,7 +111,21 @@ function DocumentaryList() {
         selectAllRowsItem: true,
         selectAllRowsItemText: 'Tous',
     };
-  
+     // amelioration 07082023
+     const formatDate = (date) => {
+        var d = new Date(date),
+            month = '' + (d.getMonth() + 1),
+            day = '' + d.getDate(),
+            year = d.getFullYear();
+
+        if (month.length < 2) 
+            month = '0' + month;
+        if (day.length < 2) 
+            day = '0' + day;
+
+        return [day, month, year].join('/');
+    }
+    // /. amelioration 07082023
     useEffect(() => {
         fetchDocsList()
     }, [])

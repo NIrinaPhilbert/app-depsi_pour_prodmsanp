@@ -38,7 +38,10 @@ class DocumentaryResourcesController extends AbstractController
             if (!file_exists($docFolder)) mkdir($docFolder, 0777, true);
             $docs = $doctrine->getManager()
                 ->getRepository(DocumentaryResources::class)
-                ->findAll();      
+                //->findAll();
+                // amelioration 0708223
+                ->findBy([], ['date' => 'DESC']);
+                // /. amelioration 0708223      
             foreach ($docs as $doc) {
                 $docFiles = array();
                 $docNames = array();
@@ -58,7 +61,10 @@ class DocumentaryResourcesController extends AbstractController
                     'coverName' => !is_null($doc->getCover()) ? $doc->getCover() : '',
                     'docFiles' => $docFiles,
                     'docNames' => !empty($docNames) ? $docNames : '',
-                    'date' => $doc->getDate()->format('d/m/Y'),
+                    //'date' => $doc->getDate()->format('d/m/Y'),
+                    // amelioration 0708223
+                    'date' => $doc->getDate()->format('Y-m-d'),
+                    // /. amelioration 0708223
                     'author' => $doc->getAuthor(),
                     'pub_type' => $doc->getPostType()->getDesignation(),
                     'direction' => $doc->getDirection()->getNom(),

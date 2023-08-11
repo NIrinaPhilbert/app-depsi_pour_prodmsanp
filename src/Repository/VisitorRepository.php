@@ -38,6 +38,18 @@ class VisitorRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
+    // evol nombre de visiteurs 10082023
+    public function findByIp($ip, $date): array
+    {
+       return $this->createQueryBuilder('v')
+           ->andWhere("v.infos LIKE '%".$ip."%'")
+           ->andWhere("v.createdAt LIKE '".$date."%'")
+           ->orderBy('v.id', 'ASC')
+           ->getQuery()
+           ->getResult()
+       ;
+    }
+    // /. evol nombre de visiteurs 10082023
 
 //    /**
 //     * @return Visitor[] Returns an array of Visitor objects
