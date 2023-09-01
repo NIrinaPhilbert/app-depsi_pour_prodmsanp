@@ -29,6 +29,7 @@ const LayoutFo = ({children}) =>{
 	const [isConnected, setIsConnected] = useState((mysession !== null && mysession.access != "none") ? true : false)
 	const [homeList, setHomeList] = useState([])
 	const [visitorCount, setVisitorCount] = useState(0)
+	const [docsDropdown, setDocsDropdown] = useState([])
 
 	useEffect(() => {
 		fetchHomeData(currentRoute.includes('/documentaryresources') ? '/api/docs_fo/latest' : '/api/home_fo')
@@ -57,7 +58,8 @@ const LayoutFo = ({children}) =>{
 		showLoader()
         axios.get(url)
         .then(function (response) {
-            setHomeList(response.data)
+            setHomeList(response.data.data)
+            setDocsDropdown(response.data.posttypes)
             let heroCarouselIndicators = select("#hero-carousel-indicators")
 			let heroCarouselItems = select('#heroCarousel .carousel-item', true)
 			heroCarouselItems.forEach((item, index) => {
@@ -123,11 +125,47 @@ const LayoutFo = ({children}) =>{
             if (result.isConfirmed) {
             	showLoader()
             	localStorage.removeItem('mysession')
+            	localStorage.removeItem('docstheme')
                 window.location.href = '/logout'
             }
           })
     }
 
+    const goToDocs = (theme_id) => {
+		//alert(theme_id) ;
+		//return false ;
+    	localStorage.setItem("docstheme", theme_id)
+		//localStorage.setItem("docstheme", 56)
+		//localStorage.setItem("exoelement", "exemple")
+    	navigate('/tolistdocs')
+    }
+	/* équivalent
+	function goToDocs(theme_id)
+	{
+		localStorage.setItem("docstheme", theme_id)
+    	navigate('/tolistdocs')
+	}
+	*/
+
+	const goToRessourcesDocumentaires = () => {
+		//alert(theme_id) ;
+		//alert('exemple') ;
+		//return false ;
+    	localStorage.removeItem('docstheme')
+		//localStorage.setItem("docstheme", 56)
+		//localStorage.setItem("exoelement", "exemple")
+    	//navigate('/documentaryresources')
+		window.location.href = '/documentaryresources' ;
+    }
+
+	
+
+	//console.log(docsDropdown) ;
+	//console.log("===////////////////////////////===") ;
+	//console.log(localStorage.getItem('exoelement')) ;
+	//console.log(localStorage.getItem('docstheme')) ;
+	//console.log(localStorage.getItem('tinymce-autosave-/admin/home/edit/7-tiny-react_73407683211691416456531-draft')) ;
+	//console.log("===////////////////////////////===") ;
     return (
     	<>
     		<header id="header" className="fixed-top d-flex align-items-center py-2 shadow">
@@ -144,17 +182,31 @@ const LayoutFo = ({children}) =>{
 					</h1>
 					<nav id="navbar" className="navbar">
 						<ul>
-							<li><Link to="/" className={currentRoute == '/' ? 'active' : ''}>ACCUEIL</Link></li>
-							<li><Link to="/documentaryresources" className={currentRoute.includes('/documentaryresources') ? 'active' : ''}>RESSOURCES DOCUMENTAIRES</Link></li>
-							<li><Link to="/infos" className={currentRoute.includes('/infos') ? 'active' : ''}>CHIFFRES CLES</Link></li>
-							<li className="dropdown">
-								<Link to="#">A PROPOS</Link>
-								<ul className="">
-									<li><Link to="/aboutmoh" className={currentRoute.includes('/aboutmoh') ? 'active' : ''}>Organigramme Ministère</Link></li>
-									<li><Link to="/about" className={currentRoute.includes('/about') ? 'active' : ''}>Mots de la DEPSI</Link></li>
-									<li><Link to="/organigrammedepsi" className={currentRoute.includes('/organigrammedepsi') ? 'active' : ''}>Organigramme DEPSI</Link></li>
+							<li><Link to="/" className={currentRoute == '/' ? 'active' : ''}><span>ACCUEIL</span></Link></li>
+							<li className="dropdown dropdown-docs">
+								<Link onClick={(e)=>{e.preventDefault(); goToRessourcesDocumentaires();}} className={currentRoute.includes('/documentaryresources') ? 'active' : ''}><span>RESSOURCES DOCUMENTAIRES</span> <i className="bi bi-chevron-down"></i></Link>
+								<ul>
+									{docsDropdown.map((dropdown, keyDrop) => {
+										
+										return (
+											<li className="dropdown" key={"drop"+keyDrop}>
+												<Link className={dropdown.themes.some((resultsearchtheme)=>resultsearchtheme.id == localStorage.getItem("docstheme")) ? "active" : ""}><span>{dropdown.designation}</span> <i className="bi bi-chevron-right"></i></Link>
+												<ul className="dropdownsousmenu">
+													{dropdown.themes.map((theme, keyTheme) => {
+														return (
+															<li key={"theme"+keyTheme}>
+																<a className={theme.id == localStorage.getItem("docstheme") ? "active" : ""} onClick={(e)=>{e.preventDefault(); goToDocs(theme.id);}}>{theme.designation}</a>
+															</li>
+														)
+													})}
+												</ul>
+											</li>
+										)
+									})}
 								</ul>
 							</li>
+							<li><Link to="/infos" className={currentRoute.includes('/infos') ? 'active' : ''}><span>CHIFFRES CLES</span></Link></li>
+							<li className="dropdown"><Link to="#"><span>A PROPOS</span></Link></li>
 							{!isConnected && <li><a href="/login" className={'getstarted'}>Membre ?</a></li>}
 							{isConnected && <li><a onClick={(e)=>{e.preventDefault(); handleSignout();}} className={'getstarted'}><span>{mysession.firstname} {mysession.lastname}</span> <i className="bi bi-power fs-5 ms-2"></i></a></li>}
 						</ul>

@@ -22,6 +22,8 @@ function DocumentaryList() {
     const [docList, setDocList] = useState([])
     const [docListSearch, setDocListSearch] = useState([])
     const [isFetched, setIsFetched] = useState(false)
+    const [docstheme, setDocstheme] = useState(localStorage.getItem("docstheme"))
+    const [totalItems, setTotalItems] = useState(0)
 
     const initialSearch = {
         title: '',
@@ -114,12 +116,17 @@ function DocumentaryList() {
     }, [])
   
     const fetchDocsList = () => {
+        //console.log('ici de test') ;
+        //return false ;
     	setIsFetched(false)
         showLoader()
         goToTop(0, 0)
-        axios.get('/api/docs_fo/list')
+        var zUrl = '/api/docs_fo/list/'+(docstheme !== null ? docstheme : '0')
+        console.log(zUrl)
+        axios.get(zUrl)
         .then(function (response) {
 			setIsFetched(true)
+            setTotalItems(response.data.length)
 			response.data.map((doc, key)=>{
                 var accessClass = (doc.documentAccess == document_access_keys[0]) ? 'badge bg-primary' : 'badge bg-danger'
                 doc.documentAccess = (
@@ -224,6 +231,8 @@ function DocumentaryList() {
                                     <i className="bi bi-bootstrap-reboot me-1"></i>
                                     Actualiser
                                 </button>
+                                &nbsp;
+                                <button className='btn btn-info'>{totalItems} documents trouvés</button>
                             </div>
                             <div className="mb-1 mt-3 px-2 py-3">
                                 <div className="w-100 border border-radius-0 p-3">

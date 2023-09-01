@@ -23,6 +23,11 @@ class Info
     private $title;
 
     /**
+     * @ORM\Column(type="string", length=10, options={"default" : "public"})
+     */
+    private $info_access;
+
+    /**
      * @ORM\Column(type="text", nullable=true)
      */
     private $text_content;
@@ -69,6 +74,18 @@ class Info
     public function setMajAt(\DateTimeInterface $maj_at): self
     {
         $this->maj_at = $maj_at;
+
+        return $this;
+    }
+
+    public function getInfoAccess(): ?string
+    {
+        return $this->info_access;
+    }
+
+    public function setInfoAccess(string $info_access): self
+    {
+        $this->info_access = $info_access;
 
         return $this;
     }

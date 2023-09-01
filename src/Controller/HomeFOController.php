@@ -10,6 +10,8 @@ use Doctrine\Persistence\ManagerRegistry;
 use App\Entity\Visitor;
 use App\Entity\Home;
 use App\Repository\HomeRepository;
+use App\Entity\PostType;
+use App\Entity\Themes;
 use Symfony\Component\Security\Core\Security;
   
 /**
@@ -41,7 +43,32 @@ class HomeFOController extends AbstractController
         $docs = $doctrine->getManager()
             ->getRepository(Home::class)
             ->getHomeDataByNombre(10) ;
-            //->findAll();      
+        /*
+        $posttypes = $doctrine->getManager()
+            ->getRepository(PostType::class)
+            ->findAll();
+        */
+        $posttypes = $doctrine->getManager()
+            ->getRepository(PostType::class)
+            ->findBy([], ['designation' => 'ASC']);
+        $listPosttypes = array();      
+        foreach ($posttypes as $posttype) {
+            $themes = $doctrine->getManager()
+                ->getRepository(Themes::class)
+                ->findBy(array("posttype"=>$posttype), ['designation' => 'ASC']);
+            $listThemes = array();
+            foreach ($themes as $theme) {
+                $listThemes[] = [
+                    'id' => $theme->getId(),
+                    'designation' => $theme->getDesignation()
+                ];
+            }
+            $listPosttypes[] = [
+                'id' => $posttype->getId(),
+                'designation' => $posttype->getDesignation(),
+                'themes' => $listThemes
+            ];
+        }
         foreach ($docs as $doc) {
             $data[] = [
                 'id' => $doc->getId(),
@@ -52,7 +79,7 @@ class HomeFOController extends AbstractController
             ];
         }
   
-        return $this->json($data);
+        return $this->json(array("data"=>$data, "posttypes"=>$listPosttypes));
     }
 
     /**

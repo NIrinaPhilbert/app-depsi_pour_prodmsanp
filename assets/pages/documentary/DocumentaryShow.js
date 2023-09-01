@@ -147,6 +147,7 @@ function DocumentaryShow() {
                                                                     </div>
                                                                     <div className="card-body">
                                                                         <h6 className="card-title document-title fs-6">{docNames[keyfile]}</h6>
+                                                                        <label className="text-muted text-end w-100 mt-2">{docSizes[keyfile]}</label>
                                                                         <p className="card-text text-center mt-4">
                                                                             <a
                                                                                 href={dfile}

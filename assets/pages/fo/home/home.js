@@ -10,7 +10,7 @@ function Home() {
     const [eventList, setEventList] = useState(["init"])
     const [currentPage, setCurrentPage] = useState(1);
     const [pagination, setPagination] = useState([])
-    const [isFetched, setIsFetched] = useState(true)
+    const [isFetched, setIsFetched] = useState(false)
     const [isFiguresFetched, setIsFiguresFetched] = useState(false)
     const [figureList, setFigureList] = useState([])
 
@@ -20,8 +20,10 @@ function Home() {
     }, [])
 
     const fetchEventsList = (pageNumber, isEventFetched) => {
-        setIsFetched(!isEventFetched)
+        //setIsFetched(!isEventFetched)
+        setIsFetched(false)
         showLoader()
+        //console.log('ici evenement') ;
         axios.get(`/api/events_fo/${pageNumber}`)
         .then(async function (response) {
             setIsFetched(true)

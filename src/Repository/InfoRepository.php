@@ -39,7 +39,7 @@ class InfoRepository extends ServiceEntityRepository
         }
     }
 
-    public function getDataByPage($offset, $nombre, $search): array
+    public function getDataByPage($offset, $nombre, $search, $is_connected = true): array
     {
         $query = $this->createQueryBuilder('e');
         if (!is_null($search)) {
@@ -49,8 +49,20 @@ class InfoRepository extends ServiceEntityRepository
                     $query->expr()->lower('e.title'),
                     $query->expr()->lower(':searchTitle')
                 ))->setParameter('searchTitle', '%'.$search->text.'%', \PDO::PARAM_STR);
+                if(!$is_connected)
+                {
+                    $query->andWhere('e.info_access = \'public\'');
+                }
             }
+            
         }
+        if(is_null($search) && !$is_connected)
+        {
+            //$query->where('e.info_access = \'public\'');
+            $query->where('e.info_access = :access')
+                ->setParameter('access', 'public', \PDO::PARAM_STR) ;
+        }
+        
         if (!is_null($offset)) $query->setFirstResult($offset);
         if (!is_null($nombre)) $query->setMaxResults($nombre);
         if (!is_null($offset) && !is_null($nombre)) $query->orderBy('e.maj_at', 'DESC');

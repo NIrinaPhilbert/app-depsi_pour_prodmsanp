@@ -10,6 +10,7 @@ function InfoList() {
     const [infosList, setInfosList] = useState([])
     const [titleSearch, setTitleSearch] = useState("")
     const [currentPage, setCurrentPage] = useState(1);
+    const [totalItems, setTotalItems] = useState(0);
     const [pagination, setPagination] = useState([])
     const [isFetched, setIsFetched] = useState(false)
 
@@ -27,6 +28,7 @@ function InfoList() {
         .then(async function (response) {
             setIsFetched(true)
             setInfosList(await response.data.infos)
+            setTotalItems(response.data.pagination.total_items)
             var paginate = []
             for (var i = 1; i <= response.data.pagination.total; i++) {
                 paginate.push(i)
@@ -125,6 +127,10 @@ function InfoList() {
                         <>
                             <nav className="mb-3" aria-label="Page navigation">
                                 <ul className="pagination justify-content-end">
+                                    <li>
+                                    <button type="button" className="btn btn-info">Nombre résultats {totalItems}</button>
+                                        
+                                    </li>
                                     <li className={`page-item ${(currentPage <= 1) ? 'disabled' : ''}`}>
                                         {currentPage == 1
                                             ? <a className="page-link border-radius-0" tabIndex="-1" aria-disabled="true"><i className="bi bi-chevron-left"></i></a>
@@ -152,6 +158,7 @@ function InfoList() {
                         </>
                     }
                     <div className="row mb-3">
+                        
                         {infosList.length == 0
                             ? <>
                                 <div className="col-12">
@@ -187,6 +194,9 @@ function InfoList() {
                         <>
                             <nav aria-label="Page navigation">
                                 <ul className="pagination justify-content-end">
+                                    <li>
+                                        <button type="button" className="btn btn-info">Nombre résultats {totalItems}</button>
+                                    </li>
                                     <li className={`page-item ${(currentPage <= 1) ? 'disabled' : ''}`}>
                                         {currentPage == 1
                                             ? <a className="page-link border-radius-0" tabIndex="-1" aria-disabled="true"><i className="bi bi-chevron-left"></i></a>

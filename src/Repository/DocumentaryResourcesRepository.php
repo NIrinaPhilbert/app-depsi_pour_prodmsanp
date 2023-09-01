@@ -62,7 +62,7 @@ class DocumentaryResourcesRepository extends ServiceEntityRepository
         }
     }
 
-    public function getDynamicFileSize($filePath) {
+    /*public function getDynamicFileSize($filePath) {
         $bytes = filesize($filePath);
         $units = ['Ko', 'Mo', 'Go', 'To']; // Add more units as needed
         $base = 1024; // Bytes in a kilobyte
@@ -75,6 +75,18 @@ class DocumentaryResourcesRepository extends ServiceEntityRepository
         $size = round($bytes / pow($base, $index), 2);
 
         return $size . ' ' . $units[$index];
+    }*/
+    public function getDynamicFileSize($filePath) {
+        $bytes = filesize($filePath);
+        $units = array('B', 'KB', 'MB', 'GB');
+        $unitIndex = 0;
+        
+        while ($bytes >= 1024 && $unitIndex < count($units) - 1) {
+            $bytes /= 1024;
+            $unitIndex++;
+        }
+        
+        return round($bytes, 2) . ' ' . $units[$unitIndex];
     }
     // amelioration 07082023
     public function groupArrayPerNumber($data, $number) {

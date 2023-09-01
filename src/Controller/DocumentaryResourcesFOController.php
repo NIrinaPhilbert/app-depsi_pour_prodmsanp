@@ -11,6 +11,8 @@ use App\Entity\DocumentaryResources;
 use App\Repository\DocumentaryResourcesRepository;
 use App\Entity\Entities;
 use App\Entity\Direction;
+use App\Entity\PostType;
+use App\Entity\Themes;
 use Symfony\Component\Security\Core\Security;
   
 /**
@@ -19,19 +21,78 @@ use Symfony\Component\Security\Core\Security;
 class DocumentaryResourcesFOController extends AbstractController
 {
     /**
-     * @Route("/docs_fo/list", name="documentary_fo_index", methods={"GET"})
+     * @Route("/docs_fo/latest", name="documentary_fo_latest", methods={"GET"})
      */
-    public function index(ManagerRegistry $doctrine): Response
+    public function latest(ManagerRegistry $doctrine, DocumentaryResourcesRepository $documentaryResourcesRepository): Response
     {
         $data = [];
         $docFolder = '../public/files/documentary/';
         if (!file_exists($docFolder)) mkdir($docFolder, 0777, true);
         $docs = $doctrine->getManager()
             ->getRepository(DocumentaryResources::class)
-            //->findBy(array(), array('id' => 'DESC')); 
+            //->getDataByNombre(10);
+            // amelioration 09082023
+            ->getDataByNombre(9);
+            // /. amelioration 09082023
+        /*
+        $posttypes = $doctrine->getManager()
+            ->getRepository(PostType::class)
+            ->findAll();
+        */
+        $posttypes = $doctrine->getManager()
+            ->getRepository(PostType::class)
+            ->findBy([], ['designation' => 'ASC']);
+        $listPosttypes = array();      
+        foreach ($posttypes as $posttype) {
+            $themes = $doctrine->getManager()
+                ->getRepository(Themes::class)
+                ->findBy(array("posttype"=>$posttype), ['designation' => 'ASC']);
+            $listThemes = array();
+            foreach ($themes as $theme) {
+                $listThemes[] = [
+                    'id' => $theme->getId(),
+                    'designation' => $theme->getDesignation()
+                ];
+            }
+            $listPosttypes[] = [
+                'id' => $posttype->getId(),
+                'designation' => $posttype->getDesignation(),
+                'themes' => $listThemes
+            ];
+        }
+        foreach ($docs as $doc) {
+            $data[] = [
+                'id' => $doc->getId(),
+                'title' => $doc->getTitle(),
+                'imageFile' => !is_null($doc->getCover()) && !empty($doc->getCover()) ? str_replace("../public/", "/", $docFolder).$doc->getCover() : '',
+                'imageName' => !is_null($doc->getCover()) && !empty($doc->getCover()) ? $doc->getCover() : '',
+                'textContent' => ''
+            ];
+        }
+  
+        //return $this->json($data);
+        // amelioration 07082023
+        return $this->json(array("data"=>$documentaryResourcesRepository->groupArrayPerNumber($data, 3), "posttypes"=>$listPosttypes));
+        // /. amelioration 07082023
+
+    }
+
+    /**
+     * @Route("/docs_fo/list/{id}", name="documentary_fo_index", methods={"GET"})
+     */
+    public function index(int $id, ManagerRegistry $doctrine): Response
+    {
+        $data = [];
+        
+        $docFolder = '../public/files/documentary/';
+        if (!file_exists($docFolder)) mkdir($docFolder, 0777, true);
+        
+        $docs = $doctrine->getManager()
+            ->getRepository(DocumentaryResources::class)
+            //->findBy($toTableauWhere, array('date' => 'DESC')); 
             //->findAll();
             // amelioration 0708223
-            ->findBy([], ['date' => 'DESC']);
+            ->findBy($id != 0 ? ["theme" => $doctrine->getManager()->getRepository(Themes::class)->find($id)] : [], ['date' => 'DESC']);
             // /. amelioration 0708223
         foreach ($docs as $doc) {
             $docFiles = array();
@@ -69,38 +130,6 @@ class DocumentaryResourcesFOController extends AbstractController
         }
   
         return $this->json($data);
-    }
-
-    /**
-     * @Route("/docs_fo/latest", name="documentary_fo_latest", methods={"GET"})
-     */
-    public function latest(ManagerRegistry $doctrine, DocumentaryResourcesRepository $documentaryResourcesRepository): Response
-    {
-        $data = [];
-        $docFolder = '../public/files/documentary/';
-        if (!file_exists($docFolder)) mkdir($docFolder, 0777, true);
-        $docs = $doctrine->getManager()
-            ->getRepository(DocumentaryResources::class)
-            //->getDataByNombre(10);
-            // amelioration 09082023
-            ->getDataByNombre(9);
-            // /. amelioration 09082023
-
-        foreach ($docs as $doc) {
-            $data[] = [
-                'id' => $doc->getId(),
-                'title' => $doc->getTitle(),
-                'imageFile' => !is_null($doc->getCover()) && !empty($doc->getCover()) ? str_replace("../public/", "/", $docFolder).$doc->getCover() : '',
-                'imageName' => !is_null($doc->getCover()) && !empty($doc->getCover()) ? $doc->getCover() : '',
-                'textContent' => ''
-            ];
-        }
-  
-        //return $this->json($data);
-        // amelioration 07082023
-        return $this->json($documentaryResourcesRepository->groupArrayPerNumber($data, 3));
-        // /. amelioration 07082023
-
     }
 
     /**

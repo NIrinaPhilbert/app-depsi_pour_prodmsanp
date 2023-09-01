@@ -6,6 +6,7 @@ import Home from "./pages/fo/home/home"
 import HomeDetails from "./pages/fo/home/HomeDetails"
 import EventShow from "./pages/fo/event/EventShow"
 import DocumentaryList from "./pages/fo/documentary/DocumentaryList"
+import DocumentaryToList from "./pages/fo/documentary/DocumentaryToList"
 import DocumentaryShow from "./pages/fo/documentary/DocumentaryShow"
 import AboutShow from "./pages/fo/about/AboutShow"
 import AboutmohShow from "./pages/fo/about/AboutmohShow"
@@ -24,6 +25,7 @@ function MainFo() {
 	                <Route exact path="/" element={<Home/>} />
 	                <Route path="/details/:id" element={<HomeDetails/>} />
 	                <Route path="/events/:id" element={<EventShow/>} />
+	                <Route path="/tolistdocs" element={<DocumentaryToList/>} />
 	                <Route path="/documentaryresources" element={<DocumentaryList/>} />
 	                <Route path="/documentaryresources/:id" element={<DocumentaryShow/>} />
 	                <Route path="/about" element={<AboutShow/>} />

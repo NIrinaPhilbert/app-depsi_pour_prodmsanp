@@ -10,6 +10,7 @@ use Doctrine\Persistence\ManagerRegistry;
 use App\Entity\Info;
 use App\Repository\InfoRepository;
 use Symfony\Component\Security\Core\Security;
+use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
   
 /**
  * @Route("/api", name="api_")
@@ -24,10 +25,21 @@ class InfoFOController extends AbstractController
         $nombreItems = 5;
         $offset = ($page-1)*$nombreItems;
         $data['infos'] = [];
+        $is_connected =($this->getUser()) ? true : false ;
+        /*
+        //tester si $this->getUser existe => un utilisateur loggué
+        if($this->getUser())
+        {
+            echo '<pre>' ;
+            print_r($this->getUser()) ;
+            echo '</pre>' ;
+        }
+        */
+        
         if ($request->request->has('action') && $request->request->get('action') == 'search') {
             $searchData = $request->request->get('search');
             $searchData = !is_null($searchData) ? json_decode($searchData) : null;
-            $infos = $infoRepository->getDataByPage($offset, $nombreItems, $searchData);
+            $infos = $infoRepository->getDataByPage($offset, $nombreItems, $searchData, $is_connected);
             foreach ($infos as $key => $info) {
                 $textContent = $key == 0 ? $info->getTextContent() : '';
                 $data['infos'][] = [
@@ -37,7 +49,8 @@ class InfoFOController extends AbstractController
                     'majAt' => $info->getMajAt()->format('d/m/Y')
                 ];
             }
-            $all_infos = $infoRepository->getDataByPage(null, null, $searchData);
+            $all_infos = $infoRepository->getDataByPage(null, null, $searchData, $is_connected);
+            $data['pagination']['total_items'] = count($all_infos) ;
             $data['pagination']['total'] = (count($all_infos) <= $nombreItems) ? 1 : round(count($all_infos)/$nombreItems);
             $data['pagination']['current'] = $page;
 

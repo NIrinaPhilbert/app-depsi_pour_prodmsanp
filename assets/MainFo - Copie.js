@@ -34,8 +34,7 @@ function MainFo() {
 	        <ToastContainer style={{ zIndex: 9999999 }} />
         </>
     );
-}
-   
+}   
 export default MainFo;
    
 if (document.getElementById('app-fo')) {
