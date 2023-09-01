@@ -206,7 +206,14 @@ const LayoutFo = ({children}) =>{
 								</ul>
 							</li>
 							<li><Link to="/infos" className={currentRoute.includes('/infos') ? 'active' : ''}><span>CHIFFRES CLES</span></Link></li>
-							<li className="dropdown"><Link to="#"><span>A PROPOS</span></Link></li>
+							<li className="dropdown">
+								<Link to="#"><span>A PROPOS</span><i className="bi bi-chevron-down"></i></Link>
+								<ul className="">
+									<li><Link to="/aboutmoh" className={currentRoute.includes('/aboutmoh') ? 'active' : ''}>Organigramme Ministère</Link></li>
+									<li><Link to="/about" className={currentRoute.includes('/about') ? 'active' : ''}>Mots de la DEPSI</Link></li>
+									<li><Link to="/organigrammedepsi" className={currentRoute.includes('/organigrammedepsi') ? 'active' : ''}>Organigramme DEPSI</Link></li>
+								</ul>
+							</li>
 							{!isConnected && <li><a href="/login" className={'getstarted'}>Membre ?</a></li>}
 							{isConnected && <li><a onClick={(e)=>{e.preventDefault(); handleSignout();}} className={'getstarted'}><span>{mysession.firstname} {mysession.lastname}</span> <i className="bi bi-power fs-5 ms-2"></i></a></li>}
 						</ul>
@@ -280,8 +287,8 @@ const LayoutFo = ({children}) =>{
 										<span className="ms-1">DEPSI</span>
 									</h3>
 									<p>
-									DIRECTION DES ETUDES, DE LA PLANIFICATION ET DU SYSTEME D'INFORMATION
-Bâtiment Administratif du Ministère de la Santé Publique Ambohimiandra-ANTANANARIVO II 2ème étage <br/>
+									Direction des Etudes, de la Planification et du Système d'Information<br/>
+									2ème étage Bâtiment Administratif du Ministère de la Santé Publique Ambohimiandra <br/> Anatananarivo II  <br/>
 										<br/>
 										<strong>Email:</strong> msanpdepsi@gmail.com<br/>
 									</p>
