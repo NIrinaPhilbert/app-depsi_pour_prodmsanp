@@ -7,6 +7,10 @@ import 'react-toastify/dist/ReactToastify.css'
 import axios from 'axios'
 import { Editor } from '@tinymce/tinymce-react';
 
+let document_access_keys = process.env.DOCUMENT_ACCESS_KEYS
+document_access_keys = document_access_keys.split('|')
+
+
 function InfoEdit() {
     const [id, setId] = useState(useParams().id)
     const [title, setTitle] = useState('')
@@ -15,9 +19,13 @@ function InfoEdit() {
     const [isGeneralError, setIsGeneralError] = useState(false)
     const [msgGeneral, setMsgGeneral] = useState('')
     const [isFetched, setIsFetched] = useState(false)
+    const [documentAccessOptions, setDocumentAccessOptions] = useState([])
+    const [documentAccess, setDocumentAccess] = useState(document_access_keys[0])
     const navigate = useNavigate()
     const isSmallScreen = window.matchMedia('(max-width: 1023.5px)').matches
     const textContentRef = useRef(null)
+
+
 
     useEffect(() => {
         setIsGeneralError(false)
@@ -29,6 +37,8 @@ function InfoEdit() {
             let info = response.data
             setTitle(info.title)
             setTextContent(info.textContent)
+            setDocumentAccessOptions(info.documentAccessOptions)
+            setDocumentAccess([info.documentAccess])
             setIsSaving(false)
             hideLoader()
             setIsFetched(true)
@@ -66,6 +76,7 @@ function InfoEdit() {
             formData.append("action", "modify")
             formData.append("title", title)
             formData.append("textContent", textContentRef.current.getContent())
+            formData.append("infoaccess", documentAccess)
             axios.post(`/api/infos/edit/${id}`, formData)
                 .then(function (response) {
                     hideLoader()
@@ -82,6 +93,7 @@ function InfoEdit() {
                     setIsSaving(true)
                     setTitle('')
                     setTextContent('')
+                    setDocumentAccess([document_access_keys[0]])
                     navigate("/admin/infos")
                 })
                 .catch(function (error) {
@@ -100,7 +112,9 @@ function InfoEdit() {
                 });
         }
     }
-  
+    const changeDocumentAccess = (selectedOptions) => {
+        setDocumentAccess(selectedOptions.selectedKey)
+    }
     return (
         <Layout>
             <div className="pagetitle">
@@ -131,6 +145,15 @@ function InfoEdit() {
                                                         {msgGeneral}
                                                     </div>
                                                 }
+                                                <div className="form-floating mx-4 mb-3">
+                                                    <BootstrapSelect
+                                                        id="document_access"
+                                                        options={documentAccessOptions}
+                                                        placeholder={"Choisissez un type d'accès"}
+                                                        className="form-control border border-outline-primary bg-white"
+                                                        onChange={changeDocumentAccess} />
+                                                    <label htmlFor="document_access">Type d'accès <span className="text-bold text-danger text-sm">*</span></label>
+                                                </div>
                                                 <div className="form-floating mx-4 mb-3">
                                                     <input 
                                                         onChange={(event)=>{setTitle(event.target.value)}}

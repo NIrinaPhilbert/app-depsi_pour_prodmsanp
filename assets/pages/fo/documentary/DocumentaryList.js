@@ -110,10 +110,19 @@ function DocumentaryList() {
         selectAllRowsItem: true,
         selectAllRowsItemText: 'Tous',
     };
-  
+    
     useEffect(() => {
         fetchDocsList()
     }, [])
+    
+    /*
+    useEffect(() => {
+        //alert('test useeffect miverimberina') ;
+        fetchDocsList()
+        //testAlert(10)
+    })
+    */
+    
   
     const fetchDocsList = () => {
         //console.log('ici de test') ;
@@ -126,7 +135,7 @@ function DocumentaryList() {
         axios.get(zUrl)
         .then(function (response) {
 			setIsFetched(true)
-            setTotalItems(response.data.length)
+            setTotalItems(response.data.length)//pour <span id="spnNombreTotal">{totalItems}</span> => $('#spnNombreTotal').html(filteredDocs.length) ;
 			response.data.map((doc, key)=>{
                 var accessClass = (doc.documentAccess == document_access_keys[0]) ? 'badge bg-primary' : 'badge bg-danger'
                 doc.documentAccess = (
@@ -180,6 +189,7 @@ function DocumentaryList() {
     const searchDocs = (key, val) => {
         var listDocuments = [...docListSearch]
         searchData[key] = val
+        
         setSearchData(searchData)
         var filteredDocs = listDocuments.filter((thisDoc) => {
             return (
@@ -190,6 +200,8 @@ function DocumentaryList() {
                 
             )
         })
+        setTotalItems(filteredDocs.length) ; //pour <span id="spnNombreTotal">{totalItems}</span> => $('#spnNombreTotal').html(filteredDocs.length) ;
+        
         setDocList(filteredDocs)
     }
 

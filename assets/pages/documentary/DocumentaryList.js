@@ -17,10 +17,22 @@ const accesses = document_access_keys.reduce((arr, key, index) => {
 }, {})
  
 function DocumentaryList() {
+    let mysession = (localStorage.getItem('mysession') !== null) ? JSON.parse(localStorage.getItem('mysession')) : null
+    const [isConnected, setIsConnected] = useState((mysession !== null && mysession.access != "none") ? true : false)
     const  [docList, setDocList] = useState([])
     const  [isFecthed, setIsFetched] = useState(false)
+    const [docstheme, setDocstheme] = useState(localStorage.getItem("docstheme"))
+    const [docListSearch, setDocListSearch] = useState([])
     const navigate = useNavigate()
     const shouldRedirect = (localStorage.getItem('mysession') === null) ? true : false
+    const initialSearch = {
+        title: '',
+        pub_type: '',
+        thematic: '',
+        entities: '',
+
+    }
+    const [searchData, setSearchData] = useState(initialSearch)
 
     if (shouldRedirect) {
     	showLoader()
@@ -178,6 +190,7 @@ function DocumentaryList() {
                 return doc
             })
 			setDocList(response.data)
+            setDocListSearch(response.data)
 			hideLoader()
         })
         .catch(function (error) {
@@ -197,6 +210,22 @@ function DocumentaryList() {
     const handleRefresh = () => {
     	fetchDocsList()
     }
+    const searchDocs = (key, val) => {
+        var listDocuments = [...docListSearch]
+        searchData[key] = val
+        setSearchData(searchData)
+        var filteredDocs = listDocuments.filter((thisDoc) => {
+            return (
+                thisDoc.titleText.toLowerCase().includes(searchData.title.toLowerCase()) && 
+                thisDoc.pub_type.toLowerCase().includes(searchData.pub_type.toLowerCase()) && 
+                thisDoc.thematic.toLowerCase().includes(searchData.thematic.toLowerCase()) &&
+                thisDoc.entities.toLowerCase().includes(searchData.entities.toLowerCase())
+                
+            )
+        })
+        setDocList(filteredDocs)
+    }
+
 
     const handleDelete = (id) => {
         Swal.fire({
@@ -289,9 +318,43 @@ function DocumentaryList() {
                                         onClick={()=>handleRefresh()}
                                         className="btn btn-sm btn-outline-secondary mx-1">
                                         <i className="bi bi-bootstrap-reboot me-1"></i>
-                                        Actualiser
+                                        Actualiser==============
                                     </button>
             					</div>
+                                <div className="mb-1 mt-3 px-2 py-3">
+                                        <div className="w-100 border border-radius-0 p-3">
+                                            <div className="row">
+                                                <div className="col-12 mb-1">
+                                                    <h5>Zone de recherche</h5>
+                                                </div>
+                                                <div className="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                                                    <div className="form-floating">
+                                                        <input id="title" type="text" className="form-control form-control-sm border-radius-0" defaultValue={searchData.title} onChange={(e)=>searchDocs('title', e.target.value)} placeholder="Titre" />
+                                                        <label htmlFor="title">Titre</label>
+                                                    </div>
+                                                </div>
+                                                <div className="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                                                    <div className="form-floating">
+                                                        <input id="pub_type" type="text" className="form-control form-control-sm border-radius-0" defaultValue={searchData.pub_type} onChange={(e)=>searchDocs('pub_type', e.target.value)} placeholder="Type publication" />
+                                                        <label htmlFor="Type publication">Type publication</label>
+                                                    </div>
+                                                </div>
+                                                <div className="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                                                    <div className="form-floating">
+                                                        <input id="thematic" type="text" className="form-control form-control-sm border-radius-0" defaultValue={searchData.thematic} onChange={(e)=>searchDocs('thematic', e.target.value)} placeholder="Thematique" />
+                                                        <label htmlFor="Thematique">Thematique</label>
+                                                    </div>
+                                                </div>
+                                                <div className="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                                                    <div className="form-floating">
+                                                        <input id="entities" type="text" className="form-control form-control-sm border-radius-0" defaultValue={searchData.entities} onChange={(e)=>searchDocs('entities', e.target.value)} placeholder="Entite source" />
+                                                        <label htmlFor="entitysource">Entité source</label>
+                                                    </div>
+                                                </div>
+                                                
+                                            </div>
+                                        </div>
+                                </div>
                                 <DataTable 
                                     columns={columns} 
                                     data={docList} 

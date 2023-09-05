@@ -65,6 +65,7 @@ class DocumentaryResourcesController extends AbstractController
                     // amelioration 0708223
                     'date' => $doc->getDate()->format('Y-m-d'),
                     // /. amelioration 0708223
+                    'titleText' => $doc->getTitle(),
                     'author' => $doc->getAuthor(),
                     'pub_type' => $doc->getPostType()->getDesignation(),
                     'direction' => $doc->getDirection()->getNom(),

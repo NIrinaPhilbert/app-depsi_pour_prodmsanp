@@ -34,6 +34,9 @@ class DocumentaryResourcesFOController extends AbstractController
             // amelioration 09082023
             ->getDataByNombre(9);
             // /. amelioration 09082023
+        
+        
+        
         /*
         $posttypes = $doctrine->getManager()
             ->getRepository(PostType::class)
@@ -44,21 +47,39 @@ class DocumentaryResourcesFOController extends AbstractController
             ->findBy([], ['designation' => 'ASC']);
         $listPosttypes = array();      
         foreach ($posttypes as $posttype) {
+            $iCompteurThemesAccessiblesDuPostType = 0 ;
+
             $themes = $doctrine->getManager()
                 ->getRepository(Themes::class)
                 ->findBy(array("posttype"=>$posttype), ['designation' => 'ASC']);
             $listThemes = array();
             foreach ($themes as $theme) {
-                $listThemes[] = [
-                    'id' => $theme->getId(),
-                    'designation' => $theme->getDesignation()
+                $iCompteurDocsDuThemeAvecPostType = 0 ;
+                //REQUETE where posttype_id =  $posttype->getId() and theme_id = $theme->getId()
+                $docsPosttypeTheme = $doctrine->getManager()
+                    ->getRepository(DocumentaryResources::class)
+                    ->findBy(["theme" => $theme->getId(), "posttype" => $posttype->getId()]);
+                //Si existe => $iCompteurDocsDuThemeAvecPostType = nombre résultat
+                $iCompteurDocsDuThemeAvecPostType = count($docsPosttypeTheme) ;
+                                
+                if($iCompteurDocsDuThemeAvecPostType > 0)
+                {
+                    $listThemes[] = [
+                        'id' => $theme->getId(),
+                        'designation' => $theme->getDesignation()
+                    ];
+                    $iCompteurThemesAccessiblesDuPostType ++ ;
+                }
+            }
+            if($iCompteurThemesAccessiblesDuPostType > 0)
+            {
+                $listPosttypes[] = [
+                    'id' => $posttype->getId(),
+                    'designation' => $posttype->getDesignation(),
+                    'themes' => $listThemes
                 ];
             }
-            $listPosttypes[] = [
-                'id' => $posttype->getId(),
-                'designation' => $posttype->getDesignation(),
-                'themes' => $listThemes
-            ];
+            
         }
         foreach ($docs as $doc) {
             $data[] = [

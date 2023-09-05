@@ -174,15 +174,14 @@ function DocumentaryShow() {
                                                 <label htmlFor="document_access">Type d'accès <span className="text-bold text-danger text-sm">*</span></label>
                                             </div>
                                             <div className="form-floating mx-4 mb-3">
-                                                <input 
-                                                    onChange={(event)=>{setTitle(event.target.value)}}
+                                                <textarea 
                                                     value={title}
-                                                    type="text"
-                                                    className="form-control border border-outline-primary bg-white"
+                                                    className="form-control border border-outline-primary h-auto"
+                                                    rows="8"
                                                     id="title"
                                                     name="title"
                                                     placeholder="Titre"
-                                                    disabled={true}/>
+                                                    disabled={true}></textarea>
                                                 <label htmlFor="title">Titre <span className="text-bold text-danger text-sm">*</span></label>
                                             </div>
                                             <div className="form-floating form-floating-datepicker mx-4 mb-3">

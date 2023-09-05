@@ -7,12 +7,27 @@ import 'react-toastify/dist/ReactToastify.css'
 import axios from 'axios'
 import { Editor } from '@tinymce/tinymce-react';
 
+let document_access_keys = process.env.DOCUMENT_ACCESS_KEYS
+document_access_keys = document_access_keys.split('|')
+let document_access_values = process.env.DOCUMENT_ACCESS_VALUES
+document_access_values = document_access_values.split('|')
+var formattedDocumentAccess = []
+for (var i = 0; i < document_access_keys.length; i++) {
+    formattedDocumentAccess[i] = {
+        'labelKey': document_access_keys[i],
+        'value': document_access_values[i],
+        'isSelected': (i == 0) ? true : false
+    }
+}
+const documentAccessOptions = formattedDocumentAccess
+
 function InfoCreate() {
     const [title, setTitle] = useState('')
     const [textContent, setTextContent] = useState('')
     const [isSaving, setIsSaving] = useState(false)
     const [isGeneralError, setIsGeneralError] = useState(false)
     const [msgGeneral, setMsgGeneral] = useState('')
+    const [documentAccess, setDocumentAccess] = useState(document_access_keys[0])
     const navigate = useNavigate()
     const isSmallScreen = window.matchMedia('(max-width: 1023.5px)').matches
     const textContentRef = useRef(null)
@@ -34,6 +49,7 @@ function InfoCreate() {
             let formData = new FormData()
             formData.append("action", "add")
             formData.append("title", title)
+            formData.append("infoaccess", documentAccess)
             formData.append("textContent", textContentRef.current.getContent())
             axios.post('/api/infos/create', formData)
                 .then(function (response) {
@@ -69,6 +85,9 @@ function InfoCreate() {
                 });
         }
     }
+    const changeDocumentAccess = (selectedOptions) => {
+        setDocumentAccess(selectedOptions.selectedKey)
+    }
   
     return (
         <Layout>
@@ -97,6 +116,15 @@ function InfoCreate() {
                                                 {msgGeneral}
                                             </div>
                                         }
+                                        <div className="form-floating mx-4 mb-3">
+                                            <BootstrapSelect
+                                                id="document_access"
+                                                options={documentAccessOptions}
+                                                placeholder={"Choisissez un type d'accès"}
+                                                className="form-control border border-outline-primary bg-white"
+                                                onChange={changeDocumentAccess} />
+                                            <label htmlFor="document_access">Type d'accès <span className="text-bold text-danger text-sm">*</span></label>
+                                        </div>
                                         <div className="form-floating mx-4 mb-3">
                                             <input 
                                                 onChange={(event)=>{setTitle(event.target.value)}}

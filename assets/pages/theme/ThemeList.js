@@ -12,7 +12,13 @@ function ThemesList() {
     const  [isFecthed, setIsFetched] = useState(false)
     const navigate = useNavigate()
     const shouldRedirect = (localStorage.getItem('mysession') === null) ? true : false
-
+    // amelioration 04092023
+    const [themesListSearch, setThemesListSearch] = useState([])
+    const initialSearch = {
+        item: ''
+    }
+    const [searchData, setSearchData] = useState(initialSearch)
+    // /. amelioration 04092023
     if (shouldRedirect) {
     	showLoader()
 		return (
@@ -84,6 +90,9 @@ function ThemesList() {
                 return theme
             })
 			setThemesList(response.data)
+            // amelioration 04092023
+            setThemesListSearch(response.data)
+            // /. amelioration 04092023
 			hideLoader()
         })
         .catch(function (error) {
@@ -101,7 +110,11 @@ function ThemesList() {
     }
 
     const handleRefresh = () => {
+         // amelioration 04092023
+         setSearchData(initialSearch)
+         // /. amelioration 04092023
     	fetchThemesList()
+        
     }
 
     const handleDelete = (id) => {
@@ -166,7 +179,20 @@ function ThemesList() {
             }
           })
     }
-  
+    // amelioration 04092023
+    const searchThemes = (key, val) => {
+        var listInformations = [...themesListSearch]
+        searchData[key] = val
+        setSearchData(searchData)
+        var filteredThemes = listInformations.filter((thisTheme) => {
+            return (
+                thisTheme.designation.toLowerCase().includes(searchData.item.toLowerCase()) || 
+                thisTheme.type_publication.toLowerCase().includes(searchData.item.toLowerCase())
+            )
+        })
+        setThemesList(filteredThemes)
+    }
+    // /. amelioration 07092023
     return (
         <Layout>
             <div className="pagetitle">
@@ -198,6 +224,16 @@ function ThemesList() {
                                         Actualiser
                                     </button>
             					</div>
+                                 {/* amelioration 04092023 */}
+                                 {isFecthed &&
+                                    <div className="mb-2 mt-2 float-end">
+                                        <div className="form-floating">
+                                            <input style={{"minWidth": "300px"}} id="item" type="text" className="form-control form-control-sm border-radius-0" defaultValue={searchData.item} onChange={(e)=>searchThemes('item', e.target.value)} placeholder="Tapez pour chercher..." />
+                                            <label htmlFor="item">Recherche par designation ou type publication</label>
+                                        </div>
+                                    </div>
+                                }
+                                {/* /. amelioration 04092023 */}
                                 <DataTable 
                                     columns={columns} 
                                     data={themesList} 

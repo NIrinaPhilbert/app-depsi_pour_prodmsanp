@@ -174,15 +174,13 @@ function DocumentaryShow() {
                                         </div>
                                         */}
                                         <div className="form-floating mb-3">
-                                            <input 
-                                                onChange={(event)=>{setTitle(event.target.value)}}
+                                            <textarea 
                                                 value={title}
-                                                type="text"
-                                                className="form-control border-radius-0 border-outline-primary bg-white"
+                                                className="form-control border border-outline-primary h-auto bg-white"
                                                 id="title"
                                                 name="title"
                                                 placeholder="Titre"
-                                                disabled={true}/>
+                                                disabled={true}></textarea>
                                             <label htmlFor="title">Titre</label>
                                         </div>
                                         <div className="form-floating mb-3">

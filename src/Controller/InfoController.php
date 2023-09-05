@@ -35,6 +35,7 @@ class InfoController extends AbstractController
                 $data[] = [
                     'id' => $info->getId(),
                     'title' => $info->getTitle(),
+                    'infoaccess' => $info->getInfoAccess(),
                     'textContent' => $info->getTextContent(),
                     'majAt' => $info->getMajAt()->format('d/m/Y H:i')
                 ];
@@ -59,6 +60,7 @@ class InfoController extends AbstractController
                 $info = new Info();
                 $info->setTitle($request->request->get('title'));
                 $info->setTextContent($request->request->get('textContent'));
+                $info->setInfoAccess($request->request->get('infoaccess'));
                 $info->setMajAt(new \DateTime(date('Y-m-d H:i:s')));
                 $infoRepository->add($info, true);
 
@@ -87,10 +89,25 @@ class InfoController extends AbstractController
             if (!$info) {
                 return $this->json('Info introuvable : id #' . $id, 404);
             }
+
+            
+            $documentAccessOptions = array();
+            $document_access_keys = explode('|', $_ENV['DOCUMENT_ACCESS_KEYS']);
+            $document_access_values = explode('|', $_ENV['DOCUMENT_ACCESS_VALUES']);
+            foreach ($document_access_keys as $keyAccess => $valueAccessKey) {
+                $documentAccessOptions[] = (object) [
+                    'labelKey' => $document_access_keys[$keyAccess],
+                    'value' => $document_access_values[$keyAccess],
+                    'isSelected' => ($valueAccessKey == $info->getInfoAccess()) ? true : false
+                ];
+            }
+
             $data = [
                 'id' => $info->getId(),
                 'title' => $info->getTitle(),
                 'textContent' => $info->getTextContent(),
+                'documentAccess' => $info->getInfoAccess(),
+                'documentAccessOptions' => $documentAccessOptions,
                 'majAt' => $info->getMajAt()->format('d/m/Y H:i')
             ];
         }
@@ -118,6 +135,7 @@ class InfoController extends AbstractController
             if ($request->request->has('action') && $request->request->get('action') == 'modify') {
                 $info->setTitle($request->request->get('title'));
                 $info->setTextContent($request->request->get('textContent'));
+                $info->setInfoAccess($request->request->get('infoaccess'));
                 $info->setMajAt(new \DateTime(date('Y-m-d H:i:s')));
                 $entityManager->persist($info);
                 $entityManager->flush();

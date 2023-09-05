@@ -42,6 +42,12 @@ function InfoList() {
             cell: row => <div style={{display: 'block'}}>{row.title}</div>
         },
         {
+            name: 'Niveau d\'accès',
+            selector: row => row.infoaccess,
+            sortable: true,
+            cell: row => <div style={{display: 'block'}}>{row.infoaccess}</div>
+        },
+        {
             name: 'Mise à jour',
             selector: row => row.majAt,
             sortable: true,
