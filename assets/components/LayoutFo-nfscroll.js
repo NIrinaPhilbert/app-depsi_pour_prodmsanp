@@ -34,6 +34,20 @@ const LayoutFo = ({children}) =>{
 	
 
 	useEffect(() => {
+		
+		document.querySelectorAll("li.dropdownlisousmenu").forEach(function(item) {
+			console.log('ici et ici')
+			item.addEventListener("mouseover", function() {
+				  submenuWrapper = item.querySelector(".divdropdownsousmenu"),
+				  menuItemPosTop = (item.offsetTop - document.querySelector("#navbar > ul").scrollTop) + 20 + "px",
+				  menuItemPosLeft = Math.round(item.offsetWidth * 0.75) + "px"
+			  	submenuWrapper.style.cssText = "top:" + menuItemPosTop + "; left:" + menuItemPosLeft;
+			})
+		  })
+
+
+
+
 		fetchHomeData(currentRoute.includes('/documentaryresources') ? '/api/docs_fo/latest' : '/api/home_fo')
 		/**
 		* Back to top button
@@ -215,34 +229,32 @@ const LayoutFo = ({children}) =>{
 							<li><Link to="/" className={currentRoute == '/' ? 'active' : ''}><span>ACCUEIL</span></Link></li>
 							<li className="dropdown dropdown-docs">
 								<Link onClick={(e)=>{e.preventDefault(); goToRessourcesDocumentaires();}} className={currentRoute.includes('/documentaryresources') ? 'active' : ''}><span>RESSOURCES DOCUMENTAIRES</span> <i className="bi bi-chevron-down"></i></Link>
-								<ul>
-									{docsDropdown.map((dropdown, keyDrop) => {
-										
-										return (
-											<li className="dropdown" key={"drop"+keyDrop}>
-												<Link className={dropdown.themes.some((resultsearchtheme)=>resultsearchtheme.id == localStorage.getItem("docstheme")) ? "active" : ""} onClick={(e)=>{e.preventDefault(); gotToDocsPerPosttype(dropdown.id);}}><span>{dropdown.designation}</span> <i className="bi bi-chevron-right"></i></Link>
-												<ul className="dropdownsousmenu">
-													{dropdown.themes.map((theme, keyTheme) => {
-														return (
-															<li key={"theme"+keyTheme}>
-																<a className={theme.id == localStorage.getItem("docstheme") ? "active" : ""} onClick={(e)=>{e.preventDefault(); goToDocs(theme.id); }}>{theme.designation}</a>
-															</li>
-														)
-													})}
-												</ul>
-											</li>
-										)
-									})}
-								</ul>
+								<div className="divmenuressourcesdocumentaires">
+									<ul>
+										{docsDropdown.map((dropdown, keyDrop) => {
+											
+											return (
+												<li className="dropdown dropdownlisousmenu" key={"drop"+keyDrop}>
+													<Link className={dropdown.themes.some((resultsearchtheme)=>resultsearchtheme.id == localStorage.getItem("docstheme")) ? "active" : ""} onClick={(e)=>{e.preventDefault(); gotToDocsPerPosttype(dropdown.id);}}><span>{dropdown.designation}</span> <i className="bi bi-chevron-right"></i></Link>
+													<div className="divdropdownsousmenu">
+														
+													</div>
+												</li>
+											)
+										})}
+									</ul>
+								</div>
 							</li>
 							<li><Link to="/infos" className={currentRoute.includes('/infos') ? 'active' : ''}><span>CHIFFRES CLES</span></Link></li>
 							<li className="dropdown">
 								<Link to="#"><span>A PROPOS</span><i className="bi bi-chevron-down"></i></Link>
-								<ul className="">
-									<li><Link to="/aboutmoh" className={currentRoute.includes('/aboutmoh') ? 'active' : ''}>Organigramme Ministère</Link></li>
-									<li><Link to="/about" className={currentRoute.includes('/about') ? 'active' : ''}>Mots de la DEPSI</Link></li>
-									<li><Link to="/organigrammedepsi" className={currentRoute.includes('/organigrammedepsi') ? 'active' : ''}>Organigramme DEPSI</Link></li>
-								</ul>
+								<div class="divmenuressourcesdocumentaires">
+									<ul className="">
+										<li><Link to="/aboutmoh" className={currentRoute.includes('/aboutmoh') ? 'active' : ''}>Organigramme Ministère</Link></li>
+										<li><Link to="/about" className={currentRoute.includes('/about') ? 'active' : ''}>Mots de la DEPSI</Link></li>
+										<li><Link to="/organigrammedepsi" className={currentRoute.includes('/organigrammedepsi') ? 'active' : ''}>Organigramme DEPSI</Link></li>
+									</ul>
+								</div>
 							</li>
 							{!isConnected && <li><a href="/login" className={'getstarted'}>Membre ?</a></li>}
 							{isConnected && <li><a onClick={(e)=>{e.preventDefault(); handleSignout();}} className={'getstarted'}><span>{mysession.firstname} {mysession.lastname}</span> <i className="bi bi-power fs-5 ms-2"></i></a></li>}

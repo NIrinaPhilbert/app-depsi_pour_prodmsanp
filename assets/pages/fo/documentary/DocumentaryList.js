@@ -23,6 +23,7 @@ function DocumentaryList() {
     const [docListSearch, setDocListSearch] = useState([])
     const [isFetched, setIsFetched] = useState(false)
     const [docstheme, setDocstheme] = useState(localStorage.getItem("docstheme"))
+    const [docsposttype, setDocsposttype] = useState(localStorage.getItem("docsposttype"))
     const [totalItems, setTotalItems] = useState(0)
 
     const initialSearch = {
@@ -130,7 +131,17 @@ function DocumentaryList() {
     	setIsFetched(false)
         showLoader()
         goToTop(0, 0)
-        var zUrl = '/api/docs_fo/list/'+(docstheme !== null ? docstheme : '0')
+        //var zUrl = '/api/docs_fo/list/'+(docstheme !== null ? docstheme : '0')
+        var zUrl = '/api/docs_fo/list/0'
+        if(docstheme !== null)
+        {
+            zUrl = '/api/docs_fo/list/' + docstheme + '/theme'
+        }
+        if(docsposttype !== null)
+        {
+            zUrl = '/api/docs_fo/list/' + docsposttype + '/posttype'
+        }
+        
         console.log(zUrl)
         axios.get(zUrl)
         .then(function (response) {

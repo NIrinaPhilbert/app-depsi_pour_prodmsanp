@@ -21,19 +21,86 @@ use Symfony\Component\Security\Core\Security;
 class DocumentaryResourcesFOController extends AbstractController
 {
     /**
-     * @Route("/docs_fo/latest", name="documentary_fo_latest", methods={"GET"})
+     * @Route("/docs_fo/latest/{id}/{type_affichage}", name="documentary_fo_latest", methods={"GET"})
      */
-    public function latest(ManagerRegistry $doctrine, DocumentaryResourcesRepository $documentaryResourcesRepository): Response
+    public function latest(int $id=0, $type_affichage = 'theme', ManagerRegistry $doctrine, DocumentaryResourcesRepository $documentaryResourcesRepository): Response
     {
+        //echo 'controller pour slider de theme => ' . $id ;
+        //exit() ;
         $data = [];
         $docFolder = '../public/files/documentary/';
         if (!file_exists($docFolder)) mkdir($docFolder, 0777, true);
-        $docs = $doctrine->getManager()
-            ->getRepository(DocumentaryResources::class)
-            //->getDataByNombre(10);
-            // amelioration 09082023
-            ->getDataByNombre(9);
-            // /. amelioration 09082023
+
+        if($id == 0)
+        {
+            $docs = $doctrine->getManager()
+                ->getRepository(DocumentaryResources::class)
+                //->getDataByNombre(10);
+                // amelioration 09082023
+                ->getDataByNombre(9);
+                // /. amelioration 09082023
+        }
+        else
+        {
+            if($type_affichage == 'theme')
+            {
+                //Critère par thème défini
+                $docs = $doctrine->getManager()
+                    ->getRepository(DocumentaryResources::class)
+                    //->findBy($toTableauWhere, array('date' => 'DESC')); 
+                    //->findAll();
+                    // amelioration 0708223
+                    ->findBy(["theme" => $doctrine->getManager()->getRepository(Themes::class)->find($id)], ['date' => 'DESC']) ;                
+                    // /. amelioration 0708223                
+            }
+            else
+            {
+                 //Critère par thème défini
+                 $docs = $doctrine->getManager()
+                    ->getRepository(DocumentaryResources::class)
+                    //->findBy($toTableauWhere, array('date' => 'DESC')); 
+                    //->findAll();
+                    // amelioration 0708223
+                    ->findBy(["posttype" => $doctrine->getManager()->getRepository(PostType::class)->find($id)], ['date' => 'DESC']) ;                
+                    // /. amelioration 0708223                
+            }
+
+            
+            $iCompteurDocsSliderParTheme = 0 ;
+            $iDocsManquantsPourSlider = 0 ;
+            $tiArrayDocIdCollecte   = array() ;
+            foreach($docs as $iKey => $doc)
+            {
+                $iCompteurDocsSliderParTheme ++ ;
+                array_push($tiArrayDocIdCollecte, $doc->getId()) ;
+                if($iCompteurDocsSliderParTheme > 9)
+                {
+                    unset($docs[$iKey]) ;
+                }
+            }
+
+            if($iCompteurDocsSliderParTheme < 9)
+            {
+                $iDocsManquantsPourSlider = 9 - $iCompteurDocsSliderParTheme ;
+                $docsManquants = $doctrine->getManager()
+                    ->getRepository(DocumentaryResources::class)
+                    //->getDataByNombre(10);
+                    // amelioration 09082023
+                    ->getDataByNombre(16); // Pour gestion des doublons (1 à 8 possible doublons)
+                    // /. amelioration 09082023
+                $iCompteurIncrementPourStop = 0 ;
+                foreach($docsManquants as $iKeyManquant=>$docManquant)
+                {
+                    if(!in_array($docManquant->getId(), $tiArrayDocIdCollecte) && $iCompteurIncrementPourStop < $iDocsManquantsPourSlider)
+                    {
+                        array_push($docs, $docsManquants[$iKeyManquant]) ;
+                        $iCompteurIncrementPourStop ++ ;
+                    }
+                    
+                }
+            } 
+        }
+        
         
         
         
@@ -99,22 +166,37 @@ class DocumentaryResourcesFOController extends AbstractController
     }
 
     /**
-     * @Route("/docs_fo/list/{id}", name="documentary_fo_index", methods={"GET"})
+     * @Route("/docs_fo/list/{id}/{type_affichage}", name="documentary_fo_index", methods={"GET"})
      */
-    public function index(int $id, ManagerRegistry $doctrine): Response
+    public function index(int $id = 0, $type_affichage = '', ManagerRegistry $doctrine): Response
     {
+        
         $data = [];
         
         $docFolder = '../public/files/documentary/';
         if (!file_exists($docFolder)) mkdir($docFolder, 0777, true);
         
-        $docs = $doctrine->getManager()
-            ->getRepository(DocumentaryResources::class)
-            //->findBy($toTableauWhere, array('date' => 'DESC')); 
-            //->findAll();
-            // amelioration 0708223
-            ->findBy($id != 0 ? ["theme" => $doctrine->getManager()->getRepository(Themes::class)->find($id)] : [], ['date' => 'DESC']);
-            // /. amelioration 0708223
+        if($type_affichage != '')
+        {
+            $docs = $doctrine->getManager()
+                ->getRepository(DocumentaryResources::class)
+                //->findBy($toTableauWhere, array('date' => 'DESC')); 
+                //->findAll();
+                // amelioration 0708223
+                ->findBy($type_affichage == 'theme' ? ["theme" => $doctrine->getManager()->getRepository(Themes::class)->find($id)] : ["posttype" => $doctrine->getManager()->getRepository(PostType::class)->find($id)], ['date' => 'DESC']);
+                // /. amelioration 0708223
+        }
+        else
+        {
+            $docs = $doctrine->getManager()
+                ->getRepository(DocumentaryResources::class)
+                //->findBy($toTableauWhere, array('date' => 'DESC')); 
+                //->findAll();
+                // amelioration 0708223
+                ->findBy([], ['date' => 'DESC']);
+                // /. amelioration 0708223
+        }
+        
         foreach ($docs as $doc) {
             $docFiles = array();
             $docNames = array();
