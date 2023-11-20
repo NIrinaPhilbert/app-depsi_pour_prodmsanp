@@ -190,6 +190,14 @@ const Layout = ({children}) =>{
 							</li>
 							<li className="nav-item">
 								<Link
+									to="/admin/videotheques"
+									className={currentRoute.includes('/videotheques') ? 'nav-link border-radius-0' : 'nav-link border-radius-0 collapsed'}>
+									<i className="bi bi-play-btn-fill fs-5"></i>
+									<span>Vidéothèques</span>
+								</Link>
+							</li>
+							<li className="nav-item">
+								<Link
 									to="/admin/visitors"
 									className={currentRoute.includes('/visitors') ? 'nav-link border-radius-0' : 'nav-link border-radius-0 collapsed'}>
 									<i className="bi bi-person-lines-fill fs-5"></i>

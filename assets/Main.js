@@ -47,6 +47,10 @@ import ThemeEdit from "./pages/theme/ThemeEdit"
 import InfoList from "./pages/info/InfoList"
 import InfoCreate from "./pages/info/InfoCreate"
 import InfoEdit from "./pages/info/InfoEdit"
+// Vidéothèques
+import VideothequeList from "./pages/videotheque/VideothequeList"
+import VideothequeCreate from "./pages/videotheque/VideothequeCreate"
+import VideothequeEdit from "./pages/videotheque/VideothequeEdit"
 // Visitors
 import VisitorList from "./pages/visitor/VisitorList"
 // About
@@ -97,6 +101,9 @@ function Main() {
 	                <Route path="/admin/infos/new" element={<InfoCreate/>} />
 	                <Route path="/admin/infos/edit/:id" element={<InfoEdit/>} />
 	                <Route path="/admin/visitors" element={<VisitorList/>} />
+					<Route path="/admin/videotheques" element={<VideothequeList/>} />
+	                <Route path="/admin/videotheques/new" element={<VideothequeCreate/>} />
+	                <Route path="/admin/videotheques/edit/:id" element={<VideothequeEdit/>} />
 	                <Route path="/admin/about" element={<About/>} />
 					<Route path="/admin/aboutmoh" element={<AboutMOH/>} />
 					<Route path="/admin/organigrammedepsi" element={<OrganigrammeDepsi/>} />
