@@ -235,6 +235,7 @@ const LayoutFo = ({children}) =>{
 									})}
 								</ul>
 							</li>
+							<li><Link to="/videotheques" className={currentRoute == '/videotheques' ? 'active' : ''}><span>VIDEOTHEQUES</span></Link></li>
 							<li><Link to="/infos" className={currentRoute.includes('/infos') ? 'active' : ''}><span>CHIFFRES CLES</span></Link></li>
 							<li className="dropdown">
 								<Link to="#"><span>A PROPOS</span><i className="bi bi-chevron-down"></i></Link>

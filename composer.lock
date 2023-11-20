@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "bc783e33683379f0c0ad50bb7cf2a21a",
+    "content-hash": "305514137b2909c6fd2dd30b9ce0714d",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -2149,20 +2149,20 @@
         },
         {
             "name": "sensio/framework-extra-bundle",
-            "version": "v6.2.8",
+            "version": "v6.2.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sensiolabs/SensioFrameworkExtraBundle.git",
-                "reference": "bb962f8aed09e60b0942545f6e4842ffeee4aafd"
+                "reference": "2f886f4b31f23c76496901acaedfedb6936ba61f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sensiolabs/SensioFrameworkExtraBundle/zipball/bb962f8aed09e60b0942545f6e4842ffeee4aafd",
-                "reference": "bb962f8aed09e60b0942545f6e4842ffeee4aafd",
+                "url": "https://api.github.com/repos/sensiolabs/SensioFrameworkExtraBundle/zipball/2f886f4b31f23c76496901acaedfedb6936ba61f",
+                "reference": "2f886f4b31f23c76496901acaedfedb6936ba61f",
                 "shasum": ""
             },
             "require": {
-                "doctrine/annotations": "^1.0",
+                "doctrine/annotations": "^1.0|^2.0",
                 "php": ">=7.2.5",
                 "symfony/config": "^4.4|^5.0|^6.0",
                 "symfony/dependency-injection": "^4.4|^5.0|^6.0",
@@ -2220,10 +2220,10 @@
                 "controllers"
             ],
             "support": {
-                "issues": "https://github.com/sensiolabs/SensioFrameworkExtraBundle/issues",
-                "source": "https://github.com/sensiolabs/SensioFrameworkExtraBundle/tree/v6.2.8"
+                "source": "https://github.com/sensiolabs/SensioFrameworkExtraBundle/tree/v6.2.10"
             },
-            "time": "2022-09-05T16:44:56+00:00"
+            "abandoned": "Symfony",
+            "time": "2023-02-24T14:57:12+00:00"
         },
         {
             "name": "symfony/amqp-messenger",

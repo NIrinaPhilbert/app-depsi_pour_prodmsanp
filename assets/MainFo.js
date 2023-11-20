@@ -8,6 +8,8 @@ import EventShow from "./pages/fo/event/EventShow"
 import DocumentaryList from "./pages/fo/documentary/DocumentaryList"
 import DocumentaryToList from "./pages/fo/documentary/DocumentaryToList"
 import DocumentaryShow from "./pages/fo/documentary/DocumentaryShow"
+import Videotheque from "./pages/fo/videotheque/Videotheque"
+import VideothequeDetails from "./pages/fo/videotheque/VideothequeDetails"
 import AboutShow from "./pages/fo/about/AboutShow"
 import AboutmohShow from "./pages/fo/about/AboutmohShow"
 import OrganigrammeDepsi from "./pages/fo/about/OrganigrammeDepsi"
@@ -28,6 +30,8 @@ function MainFo() {
 	                <Route path="/tolistdocs" element={<DocumentaryToList/>} />
 	                <Route path="/documentaryresources" element={<DocumentaryList/>} />
 	                <Route path="/documentaryresources/:id" element={<DocumentaryShow/>} />
+					<Route path="/videotheques" element={<Videotheque/>} />
+	                <Route path="/videotheques/details/:id" element={<VideothequeDetails/>} />
 	                <Route path="/about" element={<AboutShow/>} />
 					<Route path="/aboutmoh" element={<AboutmohShow/>} />
 					<Route path="/organigrammedepsi" element={<OrganigrammeDepsi/>} />
