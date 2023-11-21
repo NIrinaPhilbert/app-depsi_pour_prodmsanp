@@ -30,7 +30,6 @@ const LayoutFo = ({children}) =>{
 	const [homeList, setHomeList] = useState([])
 	const [visitorCount, setVisitorCount] = useState(0)
 	const [docsDropdown, setDocsDropdown] = useState([])
-	const [dropIsDown, setDropIsDown] = useState(false)
 
 	
 
@@ -188,33 +187,7 @@ const LayoutFo = ({children}) =>{
     	//navigate('/documentaryresources')
 		window.location.href = '/documentaryresources' ;
     }
-	//==========================change format menu====20112023===========//
-	const changeStateTheme = (drop) => {
-    	let tDropsAll = document.querySelectorAll('.overlay-documentary .drops')
-    	for (var i = 0; i < tDropsAll.length; i++) {
-	    	tDropsAll[i].querySelector('i').classList.remove('bi-chevron-down')
-	    	tDropsAll[i].querySelector('i').classList.add('bi-chevron-right')
-    	}
-    	document.querySelector('.overlay-documentary .drop-'+drop.id).querySelector('i').classList.remove('bi-chevron-right')
-    	document.querySelector('.overlay-documentary .drop-'+drop.id).querySelector('i').classList.add('bi-chevron-down')
-    	let tOverlayAll = document.querySelectorAll('.overlay-documentary .themes')
-    	for (var i = 0; i < tOverlayAll.length; i++) {
-	    	tOverlayAll[i].classList.remove('d-block')
-	    	tOverlayAll[i].classList.add('d-none')
-    	}
-    	let tOverlay = document.querySelectorAll('.overlay-documentary .theme-'+drop.id)
-    	for (var i = 0; i < tOverlay.length; i++) {
-	    	tOverlay[i].classList.remove('d-none')
-	    	tOverlay[i].classList.add('d-block')
-    	}
-    }
 
-    const dropDocs = () => {
-    	let state = !dropIsDown
-    	setDropIsDown(state)
-    }
-
-	//==========================================================//
 	
 
 	//console.log(docsDropdown) ;
@@ -240,13 +213,28 @@ const LayoutFo = ({children}) =>{
 					<nav id="navbar" className="navbar">
 						<ul>
 							<li><Link to="/" className={currentRoute == '/' ? 'active' : ''}><span>ACCUEIL</span></Link></li>
-
-							<li className="dropdown-docs">
-								<a onClick={(e)=>{e.preventDefault(); dropDocs(); goToRessourcesDocumentaires();}} className={currentRoute.includes('/documentaryresources') ? 'active' : ''}><span>RESSOURCES DOCUMENTAIRES</span> <i className="bi bi-chevron-down"></i></a>
+							<li className="dropdown dropdown-docs">
+								<Link onClick={(e)=>{e.preventDefault(); goToRessourcesDocumentaires();}} className={currentRoute.includes('/documentaryresources') ? 'active' : ''}><span>RESSOURCES DOCUMENTAIRES</span> <i className="bi bi-chevron-down"></i></Link>
+								<ul>
+									{docsDropdown.map((dropdown, keyDrop) => {
+										
+										return (
+											<li className="dropdown" key={"drop"+keyDrop}>
+												<Link className={dropdown.themes.some((resultsearchtheme)=>resultsearchtheme.id == localStorage.getItem("docstheme")) ? "active" : ""} onClick={(e)=>{e.preventDefault(); gotToDocsPerPosttype(dropdown.id);}}><span>{dropdown.designation}</span> <i className="bi bi-chevron-right"></i></Link>
+												<ul className="dropdownsousmenu">
+													{dropdown.themes.map((theme, keyTheme) => {
+														return (
+															<li key={"theme"+keyTheme}>
+																<a className={theme.id == localStorage.getItem("docstheme") ? "active" : ""} onClick={(e)=>{e.preventDefault(); goToDocs(theme.id); }}>{theme.designation}</a>
+															</li>
+														)
+													})}
+												</ul>
+											</li>
+										)
+									})}
+								</ul>
 							</li>
-							
-
-
 							<li><Link to="/videotheques" className={currentRoute == '/videotheques' ? 'active' : ''}><span>VIDEOTHEQUES</span></Link></li>
 							<li><Link to="/infos" className={currentRoute.includes('/infos') ? 'active' : ''}><span>CHIFFRES CLES</span></Link></li>
 							<li className="dropdown">
@@ -264,40 +252,6 @@ const LayoutFo = ({children}) =>{
 					</nav>
 				</div>
 			</header>
-			{dropIsDown &&
-				<div className="overlay-documentary position-fixed bg-white w-100 py-1">
-					<div className="list-group">
-						{docsDropdown.map((dropdown, keyDrop) => {
-		                	return (
-				                <div key={"contentDrop"+keyDrop}>
-				                	<button
-				                		key={"dropOv"+keyDrop}
-				                		type="button"
-				                		className={"list-group-item list-group-item-action" + " drops drop-"+dropdown.id + (dropdown.themes.some((drop)=>drop.id == localStorage.getItem("docstheme")) ? " active" : "")}
-				                		aria-current="true"
-				                		onClick={(e)=>{e.preventDefault(); changeStateTheme(dropdown);gotToDocsPerPosttype(dropdown.id);}}
-				                	>
-				                		<i className="bi bi-chevron-right me-2"></i><span>{dropdown.designation}</span>
-					                </button>
-					                {dropdown.themes.map((theme, keyTheme) => {
-										return (
-											<button
-						                		key={"themeOv"+keyTheme}
-						                		type="button"
-						                		className={"list-group-item list-group-item-action ps-5 d-none" + " themes theme-"+dropdown.id + (theme.id == localStorage.getItem("docstheme") ? " active" : "")}
-						                		aria-current="true"
-						                		onClick={(e)=>{e.preventDefault(); goToDocs(theme.id);goToDocs(theme.id);}}
-						                	>
-						                		{theme.designation}
-							                </button>
-										)
-									})}
-				                </div>
-				            )
-						})}
-		            </div>
-				</div>
-			}
 			<section className="hero" id="hero">
 				<div id="heroCarousel" data-bs-interval="5000" className="carousel slide carousel-fade" data-bs-ride="carousel">
 					<ol className="carousel-indicators" id="hero-carousel-indicators"></ol>

@@ -196,17 +196,6 @@ a:hover {
   transition: 0.3s;
 }
 
-.fo .overlay-documentary {
-  top: 6em !important;
-  z-index: 10;
-  overflow-y: auto;
-  height: 75vh;
-}
-
-.fo .overlay-documentary * {
-  /*  color: #012970;*/
-}
-
 .fo .navbar .dropdown ul li {
   min-width: 200px;
 }
@@ -482,8 +471,8 @@ a:hover {
 
 .fo .heroChart .carousel-control-next-icon,
 .fo .heroChart .carousel-control-prev-icon {
-  background-color: rgba(0, 0, 0, 0.5);
-  color: #fff;
+ background-color: rgba(0, 0, 0, 0.5);
+ color: #fff;
 }
 
 .fo .hero .carousel-control-next-icon:hover,
@@ -2183,27 +2172,19 @@ a:hover {
   border-radius: 0 !important;
   height: .3rem !important;
 }
-
 .fo .progress-farm .progress-bar {
   background-color: #f4740e !important;
   width: 90%;
   animation: slideshow 2s linear;
 }
-
 /*@keyframes tolinear {
   90% { transform: translateX(0%); }
   0% { transform: translateX(-190%); }
 }*/
 @keyframes slideshow {
-  90% {
-    transform: translateX(0%);
-  }
-
-  0% {
-    transform: translateX(-190%);
-  }
+  90% { transform: translateX(0%); }
+  0% { transform: translateX(-190%); }
 }
-
 /*.fo .progress-farm .progress-bar-striped {
   background-image: linear-gradient(45deg,rgba(255,255,255,.3) 25%,transparent 25%,transparent 50%,rgba(255,255,255,.3) 50%,rgba(255,255,255,.3) 75%,transparent 75%,transparent) !important;
 }
@@ -2222,7 +2203,6 @@ a:hover {
   justify-content: center;
   align-items: center;
 }
-
 .fo .modal-loading .modal-loading-content {
   /*background: rgba(255,255,255,.2);*/
   background-color: transparent;
@@ -2230,7 +2210,6 @@ a:hover {
   width: 100%;
   height: 100%;
 }
-
 .fo .modal-loading .modal-loading-body {
   /*background: #fff;*/
   color: #fff;
@@ -2252,11 +2231,9 @@ a:hover {
 .gKbhqU {
   font-size: 10.5pt !important;
 }
-
 .cxcOiE {
   min-height: 50px !important;
 }
-
 .hbotQl {
   font-weight: bold;
 }
