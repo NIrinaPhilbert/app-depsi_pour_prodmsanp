@@ -1,6 +1,6 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-//import { createRoot } from 'react-dom/client';
+//import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./pages/fo/home/home"
 import HomeDetails from "./pages/fo/home/HomeDetails"
@@ -48,6 +48,14 @@ export default MainFo;
    
 if (document.getElementById('app-fo')) {
     //ReactDOM.render(<MainFo />, document.getElementById('app-fo'));
-	ReactDOM.render(<MainFo />, document.getElementById('app-fo'));
+	//ReactDOM.render(<MainFo />, document.getElementById('app-fo'));
 	//createRoot(document.getElementById('app-fo')).render(<MainFo />)
+	
+	const root = createRoot(document.getElementById("app-fo"));
+	root.render(
+		<React.StrictMode>
+			<MainFo />
+		</React.StrictMode>
+	);
+	
 }

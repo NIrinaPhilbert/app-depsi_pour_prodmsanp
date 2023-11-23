@@ -31,16 +31,10 @@ const LayoutFo = ({children}) =>{
 	const [visitorCount, setVisitorCount] = useState(0)
 	const [docsDropdown, setDocsDropdown] = useState([])
 	const [dropIsDown, setDropIsDown] = useState(false)
-	const [doctypeidActiveMenu, setDocTypeActiveMenu] = useState(0)
-	const [themeidActiveMenu, setThemeActiveMenu] = useState(0)
 
 	
 
 	useEffect(() => {
-		document.querySelector('#spanAccueil').classList.add('customclassaccueil') ;
-		
-		
-
 		fetchHomeData(currentRoute.includes('/documentaryresources') ? '/api/docs_fo/latest' : '/api/home_fo')
 		/**
 		* Back to top button
@@ -68,26 +62,17 @@ const LayoutFo = ({children}) =>{
 		var posttype_id_slider = (localStorage.getItem('docsposttype')) ? localStorage.getItem('docsposttype') : 0 ;
 		var zUrl = url ;
 		console.log('ici slider => ' + zUrl + ' pas post type ni theme') ;
-		
 		if(url.indexOf('latest') != '-1')
 		{
 			if(localStorage.getItem('docstheme'))
 			{
 				zUrl = url + '/' + theme_id_slider + '/theme' ;
-				console.log('ici slider => ' + zUrl + ' <==> theme :: ' + theme_id_slider + '==> ici') ;
-				//let iElementThemeId = document.querySelector('#btntheme-' + theme_id_slider).getNamedItem('data-post-type-id').value ;
-				
-				
-							
-				setThemeActiveMenu(theme_id_slider)
-				
-				//console.log('Le post type de ce theme est ==>' + iPostTypeIdOfThisTheme)
+				console.log('ici slider => ' + zUrl + ' <==> theme :: ' + theme_id_slider) ;
 			}
 			if(localStorage.getItem('docsposttype'))
 			{
 				zUrl = url + '/' + posttype_id_slider + '/posttype' ;
 				console.log('ici slider => ' + zUrl + ' <==> post type :: ' + posttype_id_slider) ;
-				setDocTypeActiveMenu(posttype_id_slider)
 			}
 		}
 		
@@ -96,10 +81,8 @@ const LayoutFo = ({children}) =>{
         .then(function (response) {
             setHomeList(response.data.data)
             setDocsDropdown(response.data.posttypes)
-			
 			localStorage.removeItem('docstheme')
 			localStorage.removeItem('docsposttype')
-			
             let heroCarouselIndicators = select("#hero-carousel-indicators")
 			let heroCarouselItems = select('#heroCarousel .carousel-item', true)
 			heroCarouselItems.forEach((item, index) => {
@@ -185,7 +168,6 @@ const LayoutFo = ({children}) =>{
 		console.log('post type id => ' + posttype_id) ;
 		localStorage.setItem("docsposttype", posttype_id)
 		localStorage.removeItem('docstheme')
-
 		navigate('/tolistdocs')
 	}
 	/* équivalent
@@ -195,34 +177,6 @@ const LayoutFo = ({children}) =>{
     	navigate('/tolistdocs')
 	}
 	*/
-
-    const changeStateTheme = (drop) => {
-    	let tDropsAll = document.querySelectorAll('.overlay-documentary .drops')
-    	for (var i = 0; i < tDropsAll.length; i++) {
-	    	tDropsAll[i].querySelector('i').classList.remove('bi-chevron-down')
-	    	tDropsAll[i].querySelector('i').classList.add('bi-chevron-right')
-    	}
-    	document.querySelector('.overlay-documentary .drop-'+drop.id).querySelector('i').classList.remove('bi-chevron-right')
-    	document.querySelector('.overlay-documentary .drop-'+drop.id).querySelector('i').classList.add('bi-chevron-down')
-    	let tOverlayAll = document.querySelectorAll('.overlay-documentary .themes')
-    	for (var i = 0; i < tOverlayAll.length; i++) {
-	    	tOverlayAll[i].classList.remove('d-block')
-	    	tOverlayAll[i].classList.add('d-none')
-    	}
-    	let tOverlay = document.querySelectorAll('.overlay-documentary .theme-'+drop.id)
-    	for (var i = 0; i < tOverlay.length; i++) {
-	    	tOverlay[i].classList.remove('d-none')
-	    	tOverlay[i].classList.add('d-block')
-    	}
-    }
-
-    const dropDocs = () => {
-		console.log('dropDocs') ;
-		
-    	let state = !dropIsDown
-    	setDropIsDown(state)
-	
-    }
 
 	const goToRessourcesDocumentaires = () => {
 		//alert(theme_id) ;
@@ -234,6 +188,8 @@ const LayoutFo = ({children}) =>{
     	//navigate('/documentaryresources')
 		window.location.href = '/documentaryresources' ;
     }
+
+	
 
 	//console.log(docsDropdown) ;
 	//console.log("===////////////////////////////===") ;
@@ -253,17 +209,32 @@ const LayoutFo = ({children}) =>{
 						<Link to="/">
 							<img src="/resources/img/logo.png" alt="Logo" />
 							<span className="ms-1">DEPSI</span>
-							
 						</Link>
 					</h1>
 					<nav id="navbar" className="navbar">
 						<ul>
-							<li><Link to="/" className={currentRoute == '/' ? 'active' : ''}><span id="spanAccueil" className="homeclass">ACCUEIL</span></Link></li>
-							<li className="dropdown-docs">
-								<Link to="#" className={currentRoute.includes('/documentaryresources') ? 'active' : ''}><span>RESSOURCES DOCUMENTAIRES</span> <i className="bi bi-chevron-down"></i></Link>
-								<div onClick={(e)=>{e.preventDefault(); goToRessourcesDocumentaires();}} className="divGoToRessourcesDocumentaire" onMouseOver={(e)=>{e.preventDefault(); dropDocs();}}>
-									
-								</div>
+							<li><Link to="/" className={currentRoute == '/' ? 'active' : ''}><span>ACCUEIL</span></Link></li>
+							<li className="dropdown dropdown-docs">
+								<Link onClick={(e)=>{e.preventDefault(); goToRessourcesDocumentaires();}} className={currentRoute.includes('/documentaryresources') ? 'active' : ''}><span>RESSOURCES DOCUMENTAIRES</span> <i className="bi bi-chevron-down"></i></Link>
+								<ul>
+									{docsDropdown.map((dropdown, keyDrop) => {
+										
+										return (
+											<li className="dropdown" key={"drop"+keyDrop}>
+												<Link className={dropdown.themes.some((resultsearchtheme)=>resultsearchtheme.id == localStorage.getItem("docstheme")) ? "active" : ""} onClick={(e)=>{e.preventDefault(); gotToDocsPerPosttype(dropdown.id);}}><span>{dropdown.designation}</span> <i className="bi bi-chevron-right"></i></Link>
+												<ul className="dropdownsousmenu">
+													{dropdown.themes.map((theme, keyTheme) => {
+														return (
+															<li key={"theme"+keyTheme}>
+																<a className={theme.id == localStorage.getItem("docstheme") ? "active" : ""} onClick={(e)=>{e.preventDefault(); goToDocs(theme.id); }}>{theme.designation}</a>
+															</li>
+														)
+													})}
+												</ul>
+											</li>
+										)
+									})}
+								</ul>
 							</li>
 							<li><Link to="/videotheques" className={currentRoute == '/videotheques' ? 'active' : ''}><span>VIDEOTHEQUES</span></Link></li>
 							<li><Link to="/infos" className={currentRoute.includes('/infos') ? 'active' : ''}><span>CHIFFRES CLES</span></Link></li>
@@ -282,54 +253,6 @@ const LayoutFo = ({children}) =>{
 					</nav>
 				</div>
 			</header>
-			{dropIsDown &&
-				<div className="overlay-documentary position-fixed bg-white w-100 py-1">
-					<div className="list-group">
-						
-						{docsDropdown.map((dropdown, keyDrop) => {
-		                	return (
-				                <div key={"contentDrop"+keyDrop}>
-				                	<button
-										id={"posttype" + dropdown.id}
-				                		key={"dropOv"+keyDrop}
-				                		type="button"
-				                		className={"list-group-item list-group-item-action" + " drops drop-"+dropdown.id + " " + (dropdown.id == doctypeidActiveMenu ? "active" : "")}
-				                		aria-current="true"
-				                		onClick={(e)=>{e.preventDefault(); /*changeStateTheme(dropdown);*/ gotToDocsPerPosttype(dropdown.id);}}
-										onMouseOver={(e)=>{e.preventDefault(); changeStateTheme(dropdown); /*gotToDocsPerPosttype(dropdown.id);*/}}
-				                	>
-				                		<i className="bi bi-chevron-right me-2"></i><span>{dropdown.designation}</span>
-					                </button>
-					                {dropdown.themes.map((theme, keyTheme) => {
-										document.querySelector('#spanAccueil').classList.add('customclassposttype') ;
-										/*
-										console.log(themeidActiveMenu) ;
-										if(themeidActiveMenu == theme.id)
-										{
-											console.log('ici boucle') ;
-											document.querySelector("#posttype" + dropdown.id).classList.add("active") ;
-										}*/
-										return (
-											<button
-												id={"btntheme" + theme.id}
-												key={"themeOv"+keyTheme}
-												type="button"
-												className={"list-group-item list-group-item-action ps-5 d-none" + " themes theme-"+dropdown.id + (theme.id == themeidActiveMenu ? " active" : "")}
-												aria-current="true"
-												onClick={(e)=>{e.preventDefault(); goToDocs(theme.id);}}
-											>
-												{theme.designation}
-											</button>
-										)
-										
-										
-									})}
-				                </div>
-				            )
-						})}
-		            </div>
-				</div>
-			}
 			<section className="hero" id="hero">
 				<div id="heroCarousel" data-bs-interval="5000" className="carousel slide carousel-fade" data-bs-ride="carousel">
 					<ol className="carousel-indicators" id="hero-carousel-indicators"></ol>

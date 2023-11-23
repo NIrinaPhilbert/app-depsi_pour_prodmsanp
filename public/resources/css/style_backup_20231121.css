@@ -184,23 +184,13 @@ a:hover {
  
 
 }
-.divGoToRessourcesDocumentaire{
-  /*border: 1px solid;*/
-  position: absolute;
-  top: 0em;
-  left:1em;
-  padding: 30px 130px;
-  cursor:pointer;
-}
 
-.fo .overlay-documentary {
-  top: 5em!important;
-  z-index: 10;
-  overflow-y: auto;
-  height: 75vh;
-}
-.fo .overlay-documentary * {
-/*  color: #012970;*/
+.fo .navbar .dropdownsousmenu {
+ /*Fixer la hauteur de l'ul puis scroller si très long*/
+ overflow: hidden;
+ overflow-y: auto;
+ max-height: calc(100vh - 150px);
+ /*Fixer la hauteur de l'ul puis scroller si très long*/
 }
 
 .fo .navbar .dropdown ul li {
