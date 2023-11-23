@@ -176,6 +176,7 @@ class DocumentaryResourcesFOController extends AbstractController
      */
     public function index(int $id = 0, $type_affichage = '', ManagerRegistry $doctrine): Response
     {
+        $zFilAriane = '' ;
         
         $data = [];
         
@@ -191,6 +192,27 @@ class DocumentaryResourcesFOController extends AbstractController
                 // amelioration 0708223
                 ->findBy($type_affichage == 'theme' ? ["theme" => $doctrine->getManager()->getRepository(Themes::class)->find($id)] : ["posttype" => $doctrine->getManager()->getRepository(PostType::class)->find($id)], ['date' => 'DESC']);
                 // /. amelioration 0708223
+                
+                if($type_affichage == 'posttype')
+                {
+                    $pub = $doctrine->getManager()
+                        ->getRepository(PostType::class)
+                        ->find($id);
+                    
+                    $zFilAriane .= ' -> ' . $pub->getDesignation() ;
+                    
+                }
+                else
+                {
+                    $oTheme = $doctrine->getManager()->getRepository(Themes::class)->find($id) ;
+                    $iPostTypeIdActive = $oTheme->getPosttype() ;
+                    $zThemeNomPourFileAriane = $oTheme->getDesignation() ;
+                    $pub = $doctrine->getManager()
+                        ->getRepository(PostType::class)
+                        ->find($iPostTypeIdActive);
+                    $zFilAriane .= ' -> ' . $pub->getDesignation() ;
+                    $zFilAriane .= ' -> ' . $zThemeNomPourFileAriane ;
+                }
         }
         else
         {
@@ -234,7 +256,8 @@ class DocumentaryResourcesFOController extends AbstractController
                 'entities' => $doc->getEntities()->getName(),
                 //'thematic' => $doc->getThematic(),
                 'thematic' => $doc->getThemes()->getDesignation(),
-                'documentAccess' => $doc->getDocumentAccess()
+                'documentAccess' => $doc->getDocumentAccess(),
+                'fileariane' => $zFilAriane
             ];
         }
   

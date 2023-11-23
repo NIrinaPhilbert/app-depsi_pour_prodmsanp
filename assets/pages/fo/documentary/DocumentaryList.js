@@ -25,6 +25,7 @@ function DocumentaryList() {
     const [docstheme, setDocstheme] = useState(localStorage.getItem("docstheme"))
     const [docsposttype, setDocsposttype] = useState(localStorage.getItem("docsposttype"))
     const [totalItems, setTotalItems] = useState(0)
+    const [fileariane, setFileAriane] = useState('') 
 
     const initialSearch = {
         title: '',
@@ -145,9 +146,12 @@ function DocumentaryList() {
         console.log(zUrl)
         axios.get(zUrl)
         .then(function (response) {
+            console.log(response);
 			setIsFetched(true)
             setTotalItems(response.data.length)//pour <span id="spnNombreTotal">{totalItems}</span> => $('#spnNombreTotal').html(filteredDocs.length) ;
+            var zFileAriane = '' ;
 			response.data.map((doc, key)=>{
+                zFileAriane = doc.fileariane ;
                 var accessClass = (doc.documentAccess == document_access_keys[0]) ? 'badge bg-primary' : 'badge bg-danger'
                 doc.documentAccess = (
                     <span className={accessClass}>{accesses[doc.documentAccess]}</span>
@@ -174,6 +178,7 @@ function DocumentaryList() {
                 }
                 return doc
             })
+            setFileAriane(zFileAriane)
             setDocList(response.data)
 			setDocListSearch(response.data)
 			hideLoader()
@@ -246,7 +251,7 @@ function DocumentaryList() {
                 <>
                     <div className="card shadow border-none border-radius-0">
                         <div className="card-body p-3">
-                            <h4 className="w-100">Ressources documentaires</h4>
+                            <h4 className="w-100">Ressources documentaires {fileariane}</h4>
                             <div className="mb-2 mt-3">
                                 <button 
                                     onClick={()=>handleRefresh()}
