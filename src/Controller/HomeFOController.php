@@ -10,6 +10,8 @@ use Doctrine\Persistence\ManagerRegistry;
 use App\Entity\Visitor;
 use App\Entity\Home;
 use App\Repository\HomeRepository;
+use App\Entity\DocumentaryResources;
+use App\Repository\DocumentaryResourcesRepository;
 use App\Entity\PostType;
 use App\Entity\Themes;
 use Symfony\Component\Security\Core\Security;
