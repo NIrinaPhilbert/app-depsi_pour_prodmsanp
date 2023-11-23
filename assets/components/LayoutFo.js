@@ -293,7 +293,7 @@ const LayoutFo = ({children}) =>{
 										id={"posttype" + dropdown.id}
 				                		key={"dropOv"+keyDrop}
 				                		type="button"
-				                		className={"list-group-item list-group-item-action" + " drops drop-"+dropdown.id + " " + (dropdown.id == doctypeidActiveMenu ? "active" : "")}
+				                		className={"list-group-item list-group-item-action" + " drops drop-"+dropdown.id + " " + (dropdown.id == dropdown.posttypeactive ? "active" : "")}
 				                		aria-current="true"
 				                		onClick={(e)=>{e.preventDefault(); /*changeStateTheme(dropdown);*/ gotToDocsPerPosttype(dropdown.id);}}
 										onMouseOver={(e)=>{e.preventDefault(); changeStateTheme(dropdown); /*gotToDocsPerPosttype(dropdown.id);*/}}

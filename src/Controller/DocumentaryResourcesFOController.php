@@ -30,7 +30,7 @@ class DocumentaryResourcesFOController extends AbstractController
         $data = [];
         $docFolder = '../public/files/documentary/';
         if (!file_exists($docFolder)) mkdir($docFolder, 0777, true);
-
+        $iPostTypeIdActive = 0 ; 
         if($id == 0)
         {
             $docs = $doctrine->getManager()
@@ -55,6 +55,7 @@ class DocumentaryResourcesFOController extends AbstractController
             }
             else
             {
+                $iPostTypeIdActive = $id ;
                  //Critère par thème défini
                  $docs = $doctrine->getManager()
                     ->getRepository(DocumentaryResources::class)
@@ -131,6 +132,10 @@ class DocumentaryResourcesFOController extends AbstractController
                                 
                 if($iCompteurDocsDuThemeAvecPostType > 0)
                 {
+                    if($type_affichage == 'theme' && $theme->getId() == $id)
+                    {
+                        $iPostTypeIdActive = $posttype->getId() ;
+                    }
                     $listThemes[] = [
                         'id' => $theme->getId(),
                         'designation' => $theme->getDesignation()
@@ -143,6 +148,7 @@ class DocumentaryResourcesFOController extends AbstractController
                 $listPosttypes[] = [
                     'id' => $posttype->getId(),
                     'designation' => $posttype->getDesignation(),
+                    'posttypeactive' => $iPostTypeIdActive ,
                     'themes' => $listThemes
                 ];
             }

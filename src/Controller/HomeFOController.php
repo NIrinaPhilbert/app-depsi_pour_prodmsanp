@@ -75,6 +75,7 @@ class HomeFOController extends AbstractController
                     $listThemes[] = [
                         'id' => $theme->getId(),
                         'designation' => $theme->getDesignation()
+                        
                     ];
                     $iCompteurThemesAccessiblesDuPostType ++ ;
                 }
@@ -84,6 +85,7 @@ class HomeFOController extends AbstractController
                 $listPosttypes[] = [
                     'id' => $posttype->getId(),
                     'designation' => $posttype->getDesignation(),
+                    'posttypeactive' => 0 ,
                     'themes' => $listThemes
                 ];
             }
