@@ -20,6 +20,7 @@ class AboutFOController extends AbstractController
      */
     public function index(ManagerRegistry $doctrine): Response
     {
+        
 		$about = $doctrine->getManager()
             ->getRepository(About::class)
             ->findDataByCount(1);
@@ -36,6 +37,8 @@ class AboutFOController extends AbstractController
             
            
         }
-
+        
+       
     }
+
 }

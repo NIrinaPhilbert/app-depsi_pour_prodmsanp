@@ -295,8 +295,8 @@ const LayoutFo = ({children}) =>{
 				                		type="button"
 				                		className={"list-group-item list-group-item-action" + " drops drop-"+dropdown.id + " " + (dropdown.id == dropdown.posttypeactive ? "active" : "")}
 				                		aria-current="true"
-				                		onClick={(e)=>{e.preventDefault(); changeStateTheme(dropdown);}}
-										
+				                		onClick={(e)=>{e.preventDefault(); /*changeStateTheme(dropdown);*/ gotToDocsPerPosttype(dropdown.id);}}
+										onMouseOver={(e)=>{e.preventDefault(); changeStateTheme(dropdown); /*gotToDocsPerPosttype(dropdown.id);*/}}
 				                	>
 				                		<i className="bi bi-chevron-right me-2"></i><span>{dropdown.designation}</span>
 					                </button>
