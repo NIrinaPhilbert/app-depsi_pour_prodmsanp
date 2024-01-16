@@ -168,7 +168,18 @@ class DocumentaryResourcesController extends AbstractController
                     'isSelected' => ($direction->getId() == $doc->getDirection()->getId()) ? true : false
                 ];
             }
-
+			$entitiesOptions = array();
+            $entities = $doctrine->getManager()
+                ->getRepository(Entities::class)
+                ->findAll();
+            foreach ($entities as $keyEntity => $entity) {
+                $entitiesOptions[] = (object) [
+                    'labelKey' => $entity->getId(),
+                    'value' => $entity->getName(),
+                    'isSelected' => ($entity->getId() == $doc->getEntities()->getId()) ? true : false
+                ];
+            }
+        
             $posttypeOptions = array();
             $posttypes = $doctrine->getManager()
                 ->getRepository(PostType::class)
@@ -229,12 +240,13 @@ class DocumentaryResourcesController extends AbstractController
                 'docSizes' => $docSizes,
                 'date' => $doc->getDate()->format('Y-m-d'),
                 'author' => $doc->getAuthor(),
-                'pub_type' => $doc->getPostType()->getDesignation(),
+                'pub_type' => $doc->getPostType()->getId(),
                 'posttypeOptions' => $posttypeOptions,
-                'direction' => $doc->getDirection(),
+                'direction' => $doc->getDirection()->getId(),
                 'directionOptions' => $directionOptions,
-                'entities' => $doc->getEntities(),
-                'thematic' => $doc->getThemes()->getDesignation(),
+                'entities' => $doc->getEntities()->getId(),
+                'entitiesOptions' => $entitiesOptions,
+                'thematic' => $doc->getThemes()->getId(),
                 'themesOptions' => $themesOptions,
                 'documentAccess' => $doc->getDocumentAccess(),
                 'summary' => $doc->getSummary(),

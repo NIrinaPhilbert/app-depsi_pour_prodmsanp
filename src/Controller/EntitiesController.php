@@ -142,9 +142,9 @@ class EntitiesController extends AbstractController
     }
 
     /**
-     * @Route("/entitys/entitiesOptions/{id}", name="entitiesOptions_index", methods={"GET"})
+     * @Route("/entitys/entitiesOptions/{id}", name="entitiesOptions_index", methods={"GET", "POST"})
      */
-    public function entitysOptions(int $id, ManagerRegistry $doctrine, Security $security, ParameterBagInterface $params): Response
+    public function entitysOptions(int $id,Request $request, ManagerRegistry $doctrine, Security $security, ParameterBagInterface $params): Response
     {
         $stateService = new StateService($security, $params);
         $stateAuth = $stateService->checkState();
@@ -158,7 +158,7 @@ class EntitiesController extends AbstractController
                 $entitiesOptions[] = (object) [
                     'labelKey' => $entity->getId(),
                     'value' => $entity->getName(),
-                    'isSelected' => ($keyEntity == 0) ? true : false
+                    'isSelected' => ($keyEntity == 0 && (!$request->request->has("entitys") || is_null($request->request->get("entitys")) || empty($request->request->get("entitys")))) || (($request->request->has("entitys") && !is_null($request->request->get("entitys")) && !empty($request->request->get("entitys"))) && $entity->getId() == $request->request->get("entitys")) ? true : false
                 ];
             }
         }

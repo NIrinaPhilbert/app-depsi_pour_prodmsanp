@@ -81,6 +81,7 @@ function DocumentaryEdit() {
             setPosttype(doc.pub_type)
             setPosttypeOptions(doc.posttypeOptions)
             setEntitys(doc.entities)
+			setEntitysOptions(doc.entitiesOptions)
             setThemes(doc.thematic)
             setThemesOptions(doc.themesOptions)
             setDocNames(doc.docNames)
@@ -321,10 +322,12 @@ function DocumentaryEdit() {
     const changeDirection = (selectedOptions) => {
         let directionSelected = selectedOptions.selectedKey
         setDirection(directionSelected)
+		let formData = new FormData()
+        formData.append("entitys", entitys)
         if (directionSelected != '') {
             setIsSaving(true)
             showLoader()
-            axios.get(`/api/entitys/entitiesOptions/${directionSelected}`)
+            axios.post(`/api/entitys/entitiesOptions/${directionSelected}`, formData)
             .then(function (response) {
                 setEntitysOptions(response.data)
                 setIsSaving(false)
@@ -349,10 +352,12 @@ function DocumentaryEdit() {
     const changePosttype = (selectedOptions) => {
         let posttypeSelected = selectedOptions.selectedKey
         setPosttype(posttypeSelected)
+		let formData = new FormData()
+        formData.append("thematic", themes)
         if (posttypeSelected != '') {
             setIsSaving(true)
             showLoader()
-            axios.get(`/api/themes/themesOptions/${posttypeSelected}`)
+            axios.post(`/api/themes/themesOptions/${posttypeSelected}`,formData)
             .then(function (response) {
                 setThemesOptions(response.data)
                 setIsSaving(false)
