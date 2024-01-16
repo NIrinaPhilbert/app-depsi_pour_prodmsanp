@@ -26,6 +26,7 @@ class InfoFOController extends AbstractController
         $offset = ($page-1)*$nombreItems;
         $data['infos'] = [];
         $is_connected =($this->getUser()) ? true : false ;
+        
         /*
         //tester si $this->getUser existe => un utilisateur loggué
         if($this->getUser())
@@ -37,9 +38,12 @@ class InfoFOController extends AbstractController
         */
         
         if ($request->request->has('action') && $request->request->get('action') == 'search') {
+            
             $searchData = $request->request->get('search');
             $searchData = !is_null($searchData) ? json_decode($searchData) : null;
+            
             $infos = $infoRepository->getDataByPage($offset, $nombreItems, $searchData, $is_connected);
+            
             foreach ($infos as $key => $info) {
                 $textContent = $key == 0 ? $info->getTextContent() : '';
                 $data['infos'][] = [

@@ -33,11 +33,18 @@ const LayoutFo = ({children}) =>{
 	const [dropIsDown, setDropIsDown] = useState(false)
 	const [doctypeidActiveMenu, setDocTypeActiveMenu] = useState(0)
 	const [themeidActiveMenu, setThemeActiveMenu] = useState(0)
+	const [showSlider, setShowSlider] = useState(false)
 
 	
 
 	useEffect(() => {
 		document.querySelector('#spanAccueil').classList.add('customclassaccueil') ;
+		console.log('l\'adresse' + currentRoute) ;
+
+		if(currentRoute.indexOf('/infos') == -1)
+		{
+			setShowSlider(true) ;
+		}
 		
 		
 
@@ -330,56 +337,59 @@ const LayoutFo = ({children}) =>{
 		            </div>
 				</div>
 			}
-			<section className="hero" id="hero">
-				<div id="heroCarousel" data-bs-interval="5000" className="carousel slide carousel-fade" data-bs-ride="carousel">
-					<ol className="carousel-indicators" id="hero-carousel-indicators"></ol>
-					{homeList.map((doc, key)=>{
-						return (
-							<div className="carousel-inner" role="listbox" key={key}>
-								{currentRoute.includes('/documentaryresources')
+			{showSlider && 
+				<section className="hero testhero" id="hero">
+					<div id="heroCarousel" data-bs-interval="5000" className="carousel slide carousel-fade" data-bs-ride="carousel">
+						<ol className="carousel-indicators" id="hero-carousel-indicators"></ol>
+						{homeList.map((doc, key)=>{
+							return (
+								<div className="carousel-inner" role="listbox" key={key}>
+									{currentRoute.includes('/documentaryresources')
 
-									? <>
-										{/* amelioration 07082023 */}
-											<div className={`carousel-item doc-item ${key == 0 ? 'active' : ''}`} key={"keySlide"+key}>
-												{doc.map((docData, keyDoc) => {
-													return (
-														<Link className="doc-link" to={`/documentaryresources/${docData.id}`} key={"keyData"+keyDoc}>
-															{doc.length == 3 &&
-																<img className={`doc-img doc-img-3`} style={{zIndex: "0"}} src={docData.imageFile} />
-															}
-															{doc.length == 2 &&
-																<img className={`doc-img doc-img-2`} style={{zIndex: "0"}} src={docData.imageFile} />
-															}
-															{doc.length == 1 &&
-																<img className={`doc-img doc-img-1`} style={{zIndex: "0"}} src={docData.imageFile} />
-															}
-														</Link>
-													)
-												})}
-											</div>
-										{/* /. amelioration 07082023 */}
-									</>
-									: <div className={`carousel-item ${key == 0 ? 'active' : ''}`} style={{ backgroundImage: `url(${doc.imageFile})` }}>
-										<div className="carousel-container">
-											<div className="container">
-												<h2 className="animate__animated animate__fadeInDown">{doc.title}</h2>
-												<article className="animate__animated animate__fadeInUp"></article>
-												<Link to={`/details/${doc.id}`} className="btn-get-started animate__animated animate__fadeInUp scrollto">Voir plus</Link>
+										? <>
+											{/* amelioration 07082023 */}
+												<div className={`carousel-item doc-item ${key == 0 ? 'active' : ''}`} key={"keySlide"+key}>
+													{doc.map((docData, keyDoc) => {
+														return (
+															<Link className="doc-link" to={`/documentaryresources/${docData.id}`} key={"keyData"+keyDoc}>
+																{doc.length == 3 &&
+																	<img className={`doc-img doc-img-3`} style={{zIndex: "0"}} src={docData.imageFile} />
+																}
+																{doc.length == 2 &&
+																	<img className={`doc-img doc-img-2`} style={{zIndex: "0"}} src={docData.imageFile} />
+																}
+																{doc.length == 1 &&
+																	<img className={`doc-img doc-img-1`} style={{zIndex: "0"}} src={docData.imageFile} />
+																}
+															</Link>
+														)
+													})}
+												</div>
+											{/* /. amelioration 07082023 */}
+										</>
+										: <div className={`carousel-item ${key == 0 ? 'active' : ''}`} style={{ backgroundImage: `url(${doc.imageFile})` }}>
+											<div className="carousel-container">
+												<div className="container">
+													<h2 className="animate__animated animate__fadeInDown">{doc.title}</h2>
+													<article className="animate__animated animate__fadeInUp"></article>
+													<Link to={`/details/${doc.id}`} className="btn-get-started animate__animated animate__fadeInUp scrollto">Voir plus</Link>
+												</div>
 											</div>
 										</div>
-									</div>
-								}
-							</div>
-						)
-					})}
-					<a className="carousel-control-prev" href="#heroCarousel" role="button" data-bs-slide="prev">
-						<span className="carousel-control-prev-icon bi bi-chevron-left" aria-hidden="true"></span>
-					</a>
-					<a className="carousel-control-next" href="#heroCarousel" role="button" data-bs-slide="next">
-						<span className="carousel-control-next-icon bi bi-chevron-right" aria-hidden="true"></span>
-					</a>
-				</div>
-			</section>
+									}
+								</div>
+							)
+						})}
+						<a className="carousel-control-prev" href="#heroCarousel" role="button" data-bs-slide="prev">
+							<span className="carousel-control-prev-icon bi bi-chevron-left" aria-hidden="true"></span>
+						</a>
+						<a className="carousel-control-next" href="#heroCarousel" role="button" data-bs-slide="next">
+							<span className="carousel-control-next-icon bi bi-chevron-right" aria-hidden="true"></span>
+						</a>
+					</div>
+				</section>
+			}
+			
 			<main id="main">
 				<section id="portfolio" className="portfolio">
 					<div className="container">{children}</div>
