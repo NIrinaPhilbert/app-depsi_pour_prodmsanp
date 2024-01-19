@@ -137,9 +137,9 @@ class ThemeController extends AbstractController
     }
 
     /**
-     * @Route("/themes/themesOptions/{id}", name="themesOptions_index", methods={"GET"})
+     * @Route("/themes/themesOptions/{id}", name="themesOptions_index", methods={"POST"})
      */
-    public function themesOptions(int $id, ManagerRegistry $doctrine, Security $security, ParameterBagInterface $params): Response
+    public function themesOptions(int $id, Request $request, ManagerRegistry $doctrine, Security $security, ParameterBagInterface $params): Response
     {
         $stateService = new StateService($security, $params);
         $stateAuth = $stateService->checkState();
@@ -155,7 +155,8 @@ class ThemeController extends AbstractController
                 $themesOptions[] = (object) [
                     'labelKey' => $theme->getId(),
                     'value' => $theme->getDesignation(),
-                    'isSelected' => ($keyTheme == 0) ? true : false
+                    //'isSelected' => ($keyTheme == 0) ? true : false
+                    'isSelected' => ($keyTheme == 0 && (!$request->request->has("themes") || is_null($request->request->get("themes")) || empty($request->request->get("themes")))) || (($request->request->has("themes") && !is_null($request->request->get("themes")) && !empty($request->request->get("themes"))) && $theme->getId() == $request->request->get("themes")) ? true : false
                 ];
             }
             /*

@@ -371,7 +371,7 @@ function DocumentaryCreate() {
         if (posttypeSelected != '') {
             setIsSaving(true)
             showLoader()
-            axios.get(`/api/themes/themesOptions/${posttypeSelected}`)
+            axios.post(`/api/themes/themesOptions/${posttypeSelected}`)
             .then(function (response) {
                 setThemesOptions(response.data)
                 setIsSaving(false)

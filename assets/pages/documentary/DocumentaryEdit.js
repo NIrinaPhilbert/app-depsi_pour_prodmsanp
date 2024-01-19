@@ -349,11 +349,15 @@ function DocumentaryEdit() {
     const changePosttype = (selectedOptions) => {
         let posttypeSelected = selectedOptions.selectedKey
         setPosttype(posttypeSelected)
+        let formData = new FormData()
         if (posttypeSelected != '') {
             setIsSaving(true)
             showLoader()
-            axios.get(`/api/themes/themesOptions/${posttypeSelected}`)
+            formData.append("themes", themes)
+            axios.post(`/api/themes/themesOptions/${posttypeSelected}`, formData)
             .then(function (response) {
+                console.log(response.data)
+                console.log('theme du document ===>' + themes)
                 setThemesOptions(response.data)
                 setIsSaving(false)
                 hideLoader()
